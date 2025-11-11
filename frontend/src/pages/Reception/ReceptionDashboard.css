@@ -1,0 +1,156 @@
+/* Layout Wrapper */
+.main-container {
+  display: flex;
+  height: 100vh;
+  background: #f2f2f2;
+  overflow: hidden;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 200px;
+  background: white;
+  padding: 20px;
+  border-right: 1px solid #ddd;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar h3 {
+  margin-bottom: 15px;
+}
+
+.sidebar ul li {
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.sidebar ul li:hover {
+  color: blue;
+}
+
+/* Hide sidebar on mobile */
+@media (max-width: 768px) {
+  .sidebar {
+    display: none;
+    position: absolute;
+    height: 100%;
+    z-index: 10;
+    background: white;
+  }
+  .sidebar.show {
+    display: block;
+  }
+}
+
+/* Top Bar (Mobile Only) */
+.top-bar {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .top-bar {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    background: white;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  .menu-btn {
+    font-size: 24px;
+    margin-right: 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+}
+
+/* Content */
+.content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: scroll;
+}
+
+/* Cards Grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+/* Card Design */
+.card {
+  background: white;
+  padding: 15px;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.card h3 {
+  margin-bottom: 10px;
+}
+
+/* Forms */
+.form input,
+.form select,
+.form textarea {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.form button {
+  padding: 10px;
+  width: 100%;
+  background: blue;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+/* Tables */
+.table-container {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.schedule-btn {
+  background: blue;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+/* Reports Section */
+.reports button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 8px;
+  background: blue;
+  color: white;
+  border: none;
+  border-radius: 4px;
+}
+
+/* ✅ Responsive (Cards stack vertically) */
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
