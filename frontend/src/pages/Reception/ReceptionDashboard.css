@@ -15,7 +15,15 @@
   display: flex;
   flex-direction: column;
 }
-
+.sidebar ul{
+  padding: 0;
+}
+.sidebar ul li:hover{
+  background: #1D74A6;
+}
+.sidebar ul li:hover a{
+  color: #fff !important;
+}
 .sidebar h3 {
   margin-bottom: 15px;
 }
@@ -23,12 +31,22 @@
 .sidebar ul li {
   margin-bottom: 10px;
   cursor: pointer;
+  border: 1px solid #9a9090;
 }
-
-.sidebar ul li:hover {
-  color: blue;
+.sidebar ul li a{
+  display: block;
+    color: #000;
+    border: none;
+    padding: 10px;
+    text-decoration: none;
 }
-
+.sidebar ul li a.active{
+  background: #1E92D4;
+  color: #fff !important;
+}
+.sidebar ul li a.active:hover{
+ background: #1D74A6;
+}
 /* Hide sidebar on mobile */
 @media (max-width: 768px) {
   .sidebar {
@@ -103,15 +121,6 @@
   border-radius: 4px;
 }
 
-.form button {
-  padding: 10px;
-  width: 100%;
-  background: blue;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-
 /* Tables */
 .table-container {
   overflow-x: auto;
@@ -136,21 +145,31 @@ th, td {
   cursor: pointer;
   border-radius: 4px;
 }
-
-/* Reports Section */
-.reports button {
-  width: 100%;
-  padding: 10px;
-  margin-top: 8px;
-  background: blue;
-  color: white;
-  border: none;
-  border-radius: 4px;
+.display-mob{
+    display: none;
 }
-
+.add-patient{
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.add-patient .card{
+  max-width: 60%;
+    margin: 0 auto;
+}
 /* ✅ Responsive (Cards stack vertically) */
 @media (max-width: 900px) {
   .grid {
     grid-template-columns: 1fr;
   }
+}
+@media(max-width:991px){
+    .display-lg{
+        display: none;
+    }
+    .display-mob{
+        display: block;
+    }
+  
 }

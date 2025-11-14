@@ -1,13 +1,13 @@
-button{
-    background: #1E92D4;
-    color: #fff;
-    border: none;
-    padding: 10px;
-    min-width: 100px;
-    font-size: 20px;
-    border-radius: 10px;
-    cursor: pointer;
+.btn {
+  background: #1E92D4;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  min-width: 100px;
+  font-size: 18px;
+  border-radius: 10px;
+  cursor: pointer;
 }
-button:hover{
-    background: #1D74A6;
+.btn:hover {
+  background: #1D74A6;
 }

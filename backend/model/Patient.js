@@ -6,7 +6,9 @@ const PatientSchema=mongoose.Schema({
     gender:String ,
     contact_number:String ,
     address:String ,
-    registered_date:Date, default: Date.now 
+    // registered_date:Date, default: Date.now 
+    registered_date:{ type: Date, default: Date.now }
+
 })
 
 const PatientData=mongoose.model('patient',PatientSchema);
