@@ -16,13 +16,13 @@ const Sidebar = ({ sidebarOpen }) => {
           </NavLink>
         </li>
         <li>
-          <NavLink to="/add-patient" className={({ isActive }) => (isActive ? 'active' : '')}>
-            Register
+          <NavLink to="/patients" className={({ isActive }) => (isActive ? 'active' : '')}>
+            Patients
           </NavLink>
         </li>
         <li>
-          <NavLink to="/patients" className={({ isActive }) => (isActive ? 'active' : '')}>
-            Patients
+          <NavLink to="/" className={({ isActive }) => (isActive ? 'active' : '')}>
+            Tokens
           </NavLink>
         </li>
       </ul>

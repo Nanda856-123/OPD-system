@@ -13,7 +13,7 @@ const RegisterPatient = () => {
     <div className="add-patient">
       <div className="container">
         <div className="row">
-        <Link to='/reception-dashboard'><Button><ArrowBackIcon/> Back</Button></Link>
+        <Link to='/patients'><Button><ArrowBackIcon/> Back</Button></Link>
           <PatientForm />
         </div>
       </div>
