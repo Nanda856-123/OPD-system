@@ -20,6 +20,7 @@ const Login = () => {
     e.preventDefault();
 
     axios.post('http://localhost:3000/auth/login',loginData).then((res) => {
+      console.log("LOGIN RESPONSE =", res.data);
         toast.success(res.data.message)
         let token=res.data.token
         let user=res.data.user
@@ -27,7 +28,7 @@ const Login = () => {
             localStorage.setItem('token',token)
             localStorage.setItem('user',JSON.stringify(user))
                 // role based navigation
-                if(res.data.user.role === "Admin"){
+                if(res.data.user.role === "admin"){
                     navigate('/admin-dashboard')
                 } 
                 else if(res.data.user.role === "Doctor"){
@@ -67,24 +68,27 @@ const Login = () => {
       <br />
 
       <TextField
-        fullWidth
-        label="Email"
-        value={loginData.email}
-        onChange={inputHandler}
-        name='email'
-      />
-      <br /><br />
+  fullWidth
+  label="Email"
+  value={loginData.email}
+  onChange={inputHandler}
+  name="email"
+  autoComplete="off"
+/>
 
-      <TextField
-        fullWidth
-        type="password"
-        label="Password"
-        value={loginData.password}
-        onChange={inputHandler}
-        name='password'
-      />
-      <br /><br />
+<br /><br />
 
+<TextField
+  fullWidth
+  type="password"
+  label="Password"
+  value={loginData.password}
+  onChange={inputHandler}
+  name="password"
+  autoComplete="new-password"
+/>
+
+<br /><br />
       <Button btnHandler={handleSubmit}>
         Login
       </Button>

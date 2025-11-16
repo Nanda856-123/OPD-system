@@ -1,0 +1,148 @@
+/* ------- Container -------- */
+.dept-container {
+  padding: 10px 20px;
+  max-width: 2000px;
+  margin: auto;
+}
+
+.dept-title {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 25px;
+}
+
+/* ------- Add Button -------- */
+.add-btn { 
+  background-color: #31b0cc;
+  color: white;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.add-btn:hover {
+  background-color: #0f5ca8;
+}
+
+/* ------- Table -------- */
+.dept-table-container {
+  overflow-x: auto;
+}
+
+.dept-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.dept-table th {
+  background: #f2f2f2;
+  padding: 14px;
+  text-align: left;
+  font-weight: 600;
+}
+
+.dept-table td {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+}
+
+/* ------- Buttons in Table -------- */
+.edit-btn,
+.delete-btn {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  margin-right: 8px;
+  font-size: 14px;
+}
+
+.edit-btn {
+  background-color: #31b0cc;
+  color: white;
+}
+
+.edit-btn:hover {
+  background-color: #0e699a;
+}
+
+.delete-btn {
+  background-color: #ea4f4c;
+  color: white;
+}
+
+.delete-btn:hover {
+  background-color: #ce3633;
+}
+
+/* ------- Modal -------- */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-box {
+  width: 400px;
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+}
+
+.modal-box h2 {
+  margin-bottom: 15px;
+}
+
+.modal-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid gray;
+  border-radius: 6px;
+  margin-bottom: 20px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.cancel-btn,
+.save-btn {
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+.cancel-btn {
+  background: #e0e0e0;
+}
+
+.save-btn {
+  background: #1976d2;
+  color: white;
+}
+
+.save-btn:hover {
+  background: #0d5fb6;
+}
+
+/* ------- Responsive -------- */
+@media (max-width: 600px) {
+  .modal-box {
+    width: 90%;
+  }
+}
+

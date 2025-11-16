@@ -3,14 +3,21 @@ const app=express()
 require('dotenv').config()
 require('./db/connection')
 const cors= require('cors')
+const adminRoutes = require('./routes/adminRoutes');
+const authRoutes = require('./routes/authRoutes');
 
 const PORT=process.env.PORT || 3000
-const authRoutes= require('./routes/authRoutes')
 
-app.use(cors())
+
+app.use(cors({
+  origin: '*',
+  methods: ['GET','POST','PUT','DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json())
 
-app.use('/auth',authRoutes)
+app.use('/auth',authRoutes);
+app.use('/admin', adminRoutes);
 
 // Health check
 app.get('/health', (req, res) => {
@@ -20,6 +27,10 @@ app.get('/health', (req, res) => {
 		timestamp: new Date().toISOString(),
 	})
 })
+app.get('/', (req, res) => {
+  res.send('OPD Backend Running Successfully');
+});
+
 app.listen(PORT,()=>{
 console.log(`server running on port ${PORT}`)
 })
