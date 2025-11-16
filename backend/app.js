@@ -8,11 +8,17 @@ const PORT=process.env.PORT || 3000
 const authRoutes= require('./routes/authRoutes')
 const patientRoutes=require('./routes/patientRoutes')
 
+const doctorRoutes=require('./routes/doctorRoutes')
+require('./model/Doctor');
+require('./model/Appointment');
+require('./model/Consultation');
+
 app.use(cors())
 app.use(express.json())
 
 app.use('/auth',authRoutes)
 app.use('/patient',patientRoutes)
+app.use('/doctor',doctorRoutes)
 
 // Health check
 app.get('/health', (req, res) => {
