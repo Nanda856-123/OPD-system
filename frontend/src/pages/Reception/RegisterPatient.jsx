@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import PatientForm from '../../components/PatientForm'
 import Sidebar from './Sidebar';
 import Button from '../../components/Button';

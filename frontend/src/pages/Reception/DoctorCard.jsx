@@ -32,7 +32,7 @@ const DoctorCard = () => {
             {doctors.map((doctor) => (
               <tr key={doctor._id}>
                 <td>{doctor.name}</td>
-                <td>{doctor.department_id.department_name}</td>
+                <td>{doctor.department_id?.department_name}</td>
               </tr>
             ))}
           </tbody>
