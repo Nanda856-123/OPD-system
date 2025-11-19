@@ -18,32 +18,43 @@ const DoctorCard = () => {
     })
       },[])
   return (
-    <div className="card">
-      <h4 className='mb-4' style={{textAlign:'center'}}>Doctors available</h4>
-      <div className="table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>Doctors</th>
-              <th>Departments</th>
-            </tr>
-          </thead>
-          <tbody>
-            {doctors.map((doctor) => (
-              <tr key={doctor._id}>
-                <td>{doctor.name}</td>
-                <td>{doctor.department_id?.department_name}</td>
+    <>
+      <div class="card shadow mt-5">
+        <div class="card-header border-0 p-3">
+          <div class="row align-items-center">
+            <div class="col">
+              <h6 class="mb-0">AVAILABLE DOCTORS</h6>
+            </div>
+            <div class="col text-end">
+              <a href="#!" class="btn btn-sm prim-bg">
+                See all
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table align-items-center table-flush">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col">SL NO</th>
+                <th scope="col">Doctors</th>
+                <th scope="col">Departments</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {doctors.map((doctor, index) => (
+                <tr key={doctor._id}>
+                  <th scope="row">{index + 1}</th>
+                  <td>{doctor.name}</td>
+                  <td>{doctor.department_id?.department_name}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
-      <div className="card mt-4 w-25">
-        <h2>{doctors.length}</h2>
-        <div>Doctors</div>
-      </div>
-    </div>
-  )
+    </>
+  );
 }
 
 export default DoctorCard

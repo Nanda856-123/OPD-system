@@ -6,6 +6,10 @@ import axios from 'axios'
 import toast from 'react-hot-toast'
 import Button from '../../components/Button'
 import AddIcon from '@mui/icons-material/Add';
+import { FaUsers } from "react-icons/fa";
+import { FaEdit } from "react-icons/fa";
+import { SlCalender } from "react-icons/sl";
+
 
 const Appointments = () => {
   const navigate=useNavigate();
@@ -34,112 +38,114 @@ const Appointments = () => {
   }
   return (
     <div>
-        <div className="main-container">
+      <div className="main-container">
         <Sidebar />
 
-        <div className="content">
-          <div className="container">
-        <div className="row">
-            <div className="w-100">
-        <div className="home_employee-lists m-4">
-          <div className="d-flex justify-content-between align-items-center">
-            <h4 className="mt-5 mb-5" style={{ fontSize: "30px" }}>
-              Appointments
-            </h4>
-           
-              <Link to="/appointment-form">
-              <Button>
-                <AddIcon/>
-              </Button>
-            </Link>
-        
-          </div>
-          <TableContainer className="display-lg" component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label="employees table">
-              <TableHead>
-                <TableRow>
-                    <TableCell>SL No</TableCell>
-                  <TableCell>Patient Name</TableCell>
-                  <TableCell>Doctor Name</TableCell>
-                  <TableCell>Appointment Data</TableCell>
-                  <TableCell>Time slot</TableCell>
-                  <TableCell>Token Number</TableCell>
-                  <TableCell>Schedule at</TableCell>
-                  <TableCell>Status</TableCell>
-                  <TableCell>Actions</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {appointments.length > 0 ? (
-                  appointments.map((appointment, index) => (
-                    <TableRow
-                      key={appointment._id}
-                    >
-                      <TableCell component="th" scope="row">
-                        {index + 1}
-                      </TableCell>
-                      <TableCell>{appointment.patient_id?.name}</TableCell>
-                      <TableCell>{appointment.doctor_id?.name}</TableCell>
-                      <TableCell>{appointment.appointment_date}</TableCell>
-                      <TableCell>{appointment.time_slot}</TableCell>
-                      <TableCell>{appointment.token_number}</TableCell>
-                      <TableCell>{appointment.createdAt}</TableCell>
-                      <TableCell>{appointment.status}</TableCell>
-                      <TableCell>
-                        <button onClick={()=>editAppointmentHandler(appointment)} className="btn-edit action-btn mb-2" variant="text">
-                          <Link to=''>Edit</Link>
-                        </button>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell colSpan={6} align="center">
-                      <strong>Oops..! No Appointments found</strong>
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </TableContainer>
-
-          {/* <div className="display-mob">
-            <div className="container">
-              <div className="row">
-                <div className="col-12">
-                  {patients.map((emp, index) => (
-                    <div
-                      key={index}
-                      className="card p-3 d-flex align-items-center mb-3"
-                    >
-                      <div className="card-body text-center ">
-                        <h5 className="card-title">id:{emp.id}</h5>
-                        <p className="card-text">{emp.name}</p>
-                        <a href="#" className="">
-                          {emp.email}
-                        </a>
-                        <p className="card-text">ph:{emp.contact_number}</p>
-                        <button className="btn-edit mb-2" variant="text">
-                          <Link to=''>Edit</Link>
-                        </button>
-                        <button className="btn-dlt mb-2" variant="text">
-                          <Link to=''>Delete</Link>
-                        </button>
-                      </div>
+        <div className="main inner-page">
+          <div className="dashboard-title">
+            <div className="d-flex">
+              <div className="icon-shape text-white shadow">
+                <FaUsers />
+              </div>
+              <h4 style={{ fontSize: "30px", paddingLeft: "20PX" }}>
+                All Appointments
+              </h4>
+            </div>
+            <div className="card w-25 mt-3 card-stats mb-4 mb-xl-0">
+              <div className="card-body">
+                <div className="row">
+                  <div className="col">
+                    <h5 className="card-title text-uppercase text-muted">
+                      Appointments
+                    </h5>
+                    <span className="h2 font-weight-bold">49</span>
+                  </div>
+                  <div className="col-auto">
+                    <div className="icon-shape bg-danger text-white shadow">
+                      <SlCalender />
                     </div>
-                  ))}
+                  </div>
                 </div>
               </div>
             </div>
-          </div> */}
-        </div>
-    </div>
-        </div>
-    </div>
+          </div>
+          <div className="container">
+            <div className="row">
+              <div className="w-100">
+                <div className="home_employee-lists m-4">
+                  <div className="mb-3 mt-5">
+                    <Link to="/appointment-form">
+                      <Button>
+                        <AddIcon />
+                      </Button>
+                    </Link>
+                  </div>
+                  <TableContainer component={Paper}>
+                    <Table sx={{ minWidth: 650 }} aria-label="employees table">
+                      <TableHead>
+                        <TableRow>
+                          <TableCell>SL No</TableCell>
+                          <TableCell>Patient Name</TableCell>
+                          <TableCell>Doctor Name</TableCell>
+                          <TableCell>Appointment Data</TableCell>
+                          <TableCell>Time slot</TableCell>
+                          <TableCell>Token Number</TableCell>
+                          <TableCell>Schedule at</TableCell>
+                          <TableCell>Status</TableCell>
+                          <TableCell>Actions</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {appointments.length > 0 ? (
+                          appointments.map((appointment, index) => (
+                            <TableRow key={appointment._id}>
+                              <TableCell component="th" scope="row">
+                                {index + 1}
+                              </TableCell>
+                              <TableCell>
+                                {appointment.patient_id?.name}
+                              </TableCell>
+                              <TableCell>
+                                {appointment.doctor_id?.name}
+                              </TableCell>
+                              <TableCell>
+                                {appointment.appointment_date}
+                              </TableCell>
+                              <TableCell>{appointment.time_slot}</TableCell>
+                              <TableCell>{appointment.token_number}</TableCell>
+                              <TableCell>{appointment.createdAt}</TableCell>
+                              <TableCell>{appointment.status}</TableCell>
+                              <TableCell>
+                                <button
+                                  onClick={() =>
+                                    editAppointmentHandler(appointment)
+                                  }
+                                  className="btn-edit action-btn mb-2"
+                                  variant="text"
+                                >
+                                  <Link to=""><FaEdit/></Link>
+                                </button>
+                              </TableCell>
+                            </TableRow>
+                          ))
+                        ) : (
+                          <TableRow>
+                            <TableCell colSpan={6} align="center">
+                              <strong>Oops..! No Appointments found</strong>
+                            </TableCell>
+                          </TableRow>
+                        )}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 export default Appointments

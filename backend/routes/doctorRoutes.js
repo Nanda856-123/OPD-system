@@ -7,7 +7,7 @@ const DoctorModel=require("../model/Doctor")
 router.get('/',async(req,res)=>{
     try{
         const doctors=await DoctorModel.find()
-        .populate('department_id', 'department_name');
+        .populate('department', 'name');
         res.status(200).send(doctors);
     }
     catch(error){

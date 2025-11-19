@@ -7,6 +7,9 @@ import axios from 'axios';
 import Button from '../../components/Button';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import  './Login.css';
+import { MdOutlineEmail } from "react-icons/md";
+
 
 // Validation Schema
 const schema = yup.object().shape({
@@ -58,25 +61,29 @@ const Login = () => {
   };
 
   return (
-    <Box
+    <div className='login-page'>
+      <div className="overlay-top"><h4>Welcome!!</h4></div>
+      <div className="overlay-bottom"></div>
+       <Box
       component="form"
       onSubmit={handleSubmit(onSubmit)}
       sx={{
         maxWidth: '500px',
         margin: '0 auto',
         background: '#fff',
-        marginTop: '10%',
         padding: 5,
         borderRadius: '10px',
         textAlign: 'center',
+        position: 'relative',
+        width: '100%'
       }}
     >
-      <Typography sx={{ textAlign: 'center', fontWeight: 600 }} variant="h5">
-        Login
-      </Typography>
+      <div className="mailbox-icon"><MdOutlineEmail/></div>
+        <h4 className='prim-colour'>Login</h4>
       <br />
 
       <TextField
+      variant="standard"
         fullWidth
         label="Email"
         {...register("email")}
@@ -88,6 +95,7 @@ const Login = () => {
 
      
       <TextField
+      variant="standard"
         fullWidth
         type="password"
         label="Password"
@@ -101,6 +109,8 @@ const Login = () => {
         Login
       </Button>
     </Box>
+    </div>
+   
   );
 };
 

@@ -3,6 +3,7 @@ import axios from 'axios';
 import Button from './Button';
 import toast from 'react-hot-toast';
 import { useNavigate,useLocation } from 'react-router-dom';
+import {TextField,MenuItem,FormControl,InputLabel,Select} from "@mui/material";
 
 const PatientForm = () => {
   const location=useLocation();
@@ -76,8 +77,10 @@ const PatientForm = () => {
   };
 
   return (
-    <div className="card">
-      <h4 className='mb-4' style={{textAlign:'center'}}>Register Patient</h4>
+    <div className="card register-patient-card mt-5">
+      <div className="card-header border-0 p-3 mb-3">
+      <h6>REGISTER PATIENT</h6>
+      </div>
       <form className="form" onSubmit={handleSubmit}>
         <input
           type="text"

@@ -1,7 +1,7 @@
 const mongoose=require('mongoose');
 const DoctorSchema=mongoose.Schema({
     name: String,
-    department_id: {type:mongoose.Schema.Types.ObjectId, ref:'department'},
+    department: {type:mongoose.Schema.Types.ObjectId, ref:'department'},
     qualification: String,
     availability_schedule: Array,
     contact: String,

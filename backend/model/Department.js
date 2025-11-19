@@ -1,7 +1,7 @@
 const mongoose=require('mongoose');
 const DepartmentSchema =mongoose.Schema({
-        department_name: String,
-        description: String       
+        name: String,
+        createdAt: Date        
 })
 
 const DepartmentData=mongoose.model('department',DepartmentSchema );
