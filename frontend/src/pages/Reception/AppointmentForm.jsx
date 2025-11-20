@@ -4,7 +4,9 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Link,useNavigate,useLocation } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-
+import { IoArrowBack } from "react-icons/io5";
+import { Box, Card, CardContent, CardHeader, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
+import Sidebar from './Sidebar';
 
 const AppointmentForm = () => {
     const navigate = useNavigate();
@@ -74,63 +76,153 @@ const AppointmentForm = () => {
     setAppointment({ ...appointment, [e.target.name]: e.target.value });
   };
   return (
-    <div className="appointment-form d-flex justify-content-center align-items-center vh-100 w-50 mx-auto">
-        <div className='container'>
-        <Link to='/appointments'><Button><ArrowBackIcon/> Back</Button></Link>
-            <div className="card mt-3">
-            <h4 className='mb-4' style={{textAlign:'center'}}>Schedule an appoinment</h4>
-            <form className="form">
-                <select name="patient_id" value={appointment.patient_id} onChange={inputHandler}>
-                  <option value="">Select Patient</option>
-                  {patients.length === 0 ? (
-                    <option value="" disabled>Loading patients...</option>
-                  ) : (
-                    patients.map((p) => (
-                      <option key={p._id} value={p._id}>{p.name}</option>
-                    ))
-                  )}
-                </select>
-                <select name="doctor_id" value={appointment.doctor_id} onChange={inputHandler}>
-                  <option value="">Select Doctor</option>
-                  {doctors.length === 0 ? (
-                    <option value="" disabled>Loading doctors...</option>
-                  ) : (
-                    doctors.map((doc) => (
-                      <option key={doc._id} value={doc._id}>{doc.name}</option>
-                    ))
-                  )}
-                </select>
-                <input
-                type="date"
-                name="appointment_date"
-                value={appointment.appointment_date}
-                onChange={inputHandler}
-                />
-                <input
-                type="time"
-                name="time_slot"
-                value={appointment.time_slot}
-                onChange={inputHandler}
-                />
-                <input
-                type="number"
-                placeholder="Token Number"
-                name="token_number"
-                value={appointment.token_number}
-                onChange={inputHandler}
-                />
-                <input
-                type="date"
-                name="registered_date"
-                value={appointment.registered_date}
-                onChange={inputHandler}
-                />
-                <Button btnHandler={handleSubmit}>Schedule</Button>
-            </form>
+    <div className="main-container">
+      <Sidebar />
+      <div className="main">
+        <div className="dashboard-title">
+          <div className="d-flex">
+            <div className="icon-shape text-white shadow">
+              <Link className="text-white" to="/appointments">
+                <IoArrowBack className="fs-2" />
+              </Link>
             </div>
+          </div>
         </div>
+        <div className="container">
+          <Box className="appointment-form">
+            <Card sx={{ borderRadius: 3, boxShadow: 4, padding: "20px" }}>
+              <CardHeader
+                title={
+                  <Typography variant="h6" fontWeight={700} textAlign="center">
+                    Schedule Appointment
+                  </Typography>
+                }
+                sx={{ background: "#f5f5f5", borderBottom: "1px solid #ddd" }}
+              />
+
+              <CardContent>
+                <form onSubmit={handleSubmit}>
+                  <div>
+                    {/* Patient Select */}
+                    <Grid item xs={12}>
+                      <FormControl fullWidth variant="standard">
+                        <InputLabel>Select Patient</InputLabel>
+                        <Select
+                          name="patient_id"
+                          value={appointment.patient_id}
+                          onChange={inputHandler}
+                          label="Select Patient"
+                        >
+                          <MenuItem value="">Select Patient</MenuItem>
+                          {patients.length === 0 ? (
+                            <MenuItem value="" disabled>
+                              Loading patients...
+                            </MenuItem>
+                          ) : (
+                            patients.map((p) => (
+                              <MenuItem key={p._id} value={p._id}>
+                                {p.name}
+                              </MenuItem>
+                            ))
+                          )}
+                        </Select>
+                      </FormControl>
+                    </Grid>
+
+                    {/* Doctor Select */}
+                    <Grid item xs={12} mt={2}>
+                      <FormControl fullWidth variant="standard">
+                        <InputLabel>Select doctor</InputLabel>
+                        <Select
+                          name="doctor_id"
+                          value={appointment.doctor_id}
+                          onChange={inputHandler}
+                          label="Select Doctor"
+                        >
+                          <MenuItem value="">Select Doctor</MenuItem>
+                          {doctors.length === 0 ? (
+                            <MenuItem value="" disabled>
+                              Loading doctors...
+                            </MenuItem>
+                          ) : (
+                            doctors.map((doc) => (
+                              <MenuItem key={doc._id} value={doc._id}>
+                                {doc.name}
+                              </MenuItem>
+                            ))
+                          )}
+                        </Select>
+                      </FormControl>
+                    </Grid>
+
+                    {/* Appointment Date */}
+                    <Grid item xs={12} mt={2}>
+                      <TextField
+                        fullWidth
+                        variant="standard"
+                        type="date"
+                        label="Appointment Date"
+                        name="appointment_date"
+                        InputLabelProps={{ shrink: true }}
+                        value={appointment.appointment_date}
+                        onChange={inputHandler}
+                      />
+                    </Grid>
+
+                    {/* Time Slot */}
+                    <Grid item xs={12} mt={2}>
+                      <TextField
+                        fullWidth
+                        variant="standard"
+                        type="time"
+                        label="Time Slot"
+                        name="time_slot"
+                        InputLabelProps={{ shrink: true }}
+                        value={appointment.time_slot}
+                        onChange={inputHandler}
+                      />
+                    </Grid>
+
+                    {/* Token Number */}
+                    <Grid item xs={12} mt={2}>
+                      <TextField
+                        fullWidth
+                        variant="standard"
+                        type="number"
+                        label="Token Number"
+                        name="token_number"
+                        value={appointment.token_number}
+                        onChange={inputHandler}
+                      />
+                    </Grid>
+
+                    {/* Registered Date */}
+                    <Grid item xs={12} mt={2}>
+                      <TextField
+                        fullWidth
+                        variant="standard"
+                        type="date"
+                        label="Registered Date"
+                        name="registered_date"
+                        InputLabelProps={{ shrink: true }}
+                        value={appointment.registered_date}
+                        onChange={inputHandler}
+                      />
+                    </Grid>
+
+                    {/* Submit Button */}
+                    <Grid item xs={12} textAlign="center" mt={3}>
+                      <Button type="submit">Schedule</Button>
+                    </Grid>
+                  </div>
+                </form>
+              </CardContent>
+            </Card>
+          </Box>
+        </div>
+      </div>
     </div>
-  )
+  );
 }
 
 export default AppointmentForm

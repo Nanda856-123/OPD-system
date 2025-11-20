@@ -36,8 +36,11 @@
 .sidebar ul li {
   margin-bottom: 10px;
   cursor: pointer;
-  border-radius: 8px;
   color: rgba(0, 0, 0, .5);
+}
+.sidebar ul li a:hover{
+    background-color: #5e72e4;
+    color: #fff !important;
 }
 .sidebar ul li a{
   display: block;
@@ -137,7 +140,10 @@ th, td {
   padding: 10px;
   font-weight: normal;
 }
-.main.inner-page td,.main.inner-page th{
+.main.inner-page th.MuiTableCell-head{
+  color: #fff;
+}
+.main.inner-page td{
   color: rgba(0, 0, 0, .5);
 }
 .schedule-btn {
@@ -148,20 +154,6 @@ th, td {
   cursor: pointer;
   border-radius: 4px;
 }
-.display-mob{
-    display: none;
-}
-.add-patient{
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.add-patient .card{
-  max-width: 60%;
-    margin: 0 auto;
-}
-
 .dashboard-title{
   min-height: 250px;
   padding: 30px;
@@ -174,7 +166,12 @@ th, td {
     padding: 14px;
     border-radius: 50%;
   }
-/* ✅ Responsive (Cards stack vertically) */
+.register-page .patient-form,.appointment-form {
+max-width: 900px;
+margin: 0 auto;
+position: relative;
+bottom: 140px;
+}
 @media (max-width: 900px) {
   .grid {
     grid-template-columns: 1fr;

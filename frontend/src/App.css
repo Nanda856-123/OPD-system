@@ -9,8 +9,11 @@ h1, h2, h3, h4, h5, h6,p{
     color: #5e72e4 !important;
 }
 .prim-bg{
-    color: #fff;
+    color: #fff !important;
     background-color: #5e72e4;
+}
+.prim-bg:hover{
+    background-color: #805ee4;
 }
 .text-muted {
     color: #8898aa !important;

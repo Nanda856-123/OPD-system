@@ -89,7 +89,8 @@ const editPatientHandler=(currPatient)=>{
                 Patients List
               </h4>
             </div>
-            <div className="card w-25 mt-3 card-stats mb-4 mb-xl-0">
+            <div className='col-xl-3 col-lg-6'>
+                <div className="card mt-3 card-stats mb-4 mb-xl-0">
               <div className="card-body">
                 <div className="row">
                   <div className="col">
@@ -106,6 +107,8 @@ const editPatientHandler=(currPatient)=>{
                 </div>
               </div>
             </div>
+            </div>
+            
           </div>
           <div className="container">
             <div className="row">
@@ -120,7 +123,7 @@ const editPatientHandler=(currPatient)=>{
                   </div>
                   <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 650 }} aria-label="employees table">
-                      <TableHead>
+                      <TableHead className='prim-bg'>
                         <TableRow>
                           <TableCell>SL No</TableCell>
                           <TableCell>NAME</TableCell>

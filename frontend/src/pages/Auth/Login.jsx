@@ -78,7 +78,7 @@ const Login = () => {
         width: '100%'
       }}
     >
-      <div className="mailbox-icon"><MdOutlineEmail/></div>
+      <div className="box-icon"><MdOutlineEmail/></div>
         <h4 className='prim-colour'>Login</h4>
       <br />
 
