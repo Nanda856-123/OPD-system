@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useNavigate, useLocation } from 'react-router-dom';
 import {Card,  CardContent,CardHeader,Grid,TextField,MenuItem,FormControl,InputLabel,Select,Box,Typography,} from "@mui/material";
 import Button from './Button';
+import axiosInstance from '../axiosinterceptor'
 
 
 const PatientForm = () => {
@@ -46,13 +46,13 @@ const PatientForm = () => {
     try {
       let res;
       if (location.state !== null) {
-        res = await axios.put(
-          `http://localhost:3000/patient/edit/${location.state.currPatient._id}`,
+        res = await axiosInstance.put(
+          `/patient/edit/${location.state.currPatient._id}`,
           patient
         );
       } else {
-        res = await axios.post(
-          'http://localhost:3000/patient/regPatient',
+        res = await axiosInstance.post(
+          '/patient/regPatient',
           patient
         );
       }
