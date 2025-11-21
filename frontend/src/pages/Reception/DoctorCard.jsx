@@ -46,7 +46,7 @@ const DoctorCard = () => {
                 <tr key={doctor._id}>
                   <th scope="row">{index + 1}</th>
                   <td>{doctor.name}</td>
-                  <td>{doctor.department_id?.department_name}</td>
+                  <td>{doctor.department?.name}</td>
                 </tr>
               ))}
             </tbody>
