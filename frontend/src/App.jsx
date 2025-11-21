@@ -1,7 +1,7 @@
 import './App.css'
 import { BrowserRouter,Route, Routes } from 'react-router-dom'
 import {Login, AdminDashboard, ReceptionDashboard, DoctorDashboard,Patients,RegisterPatient,
-  AppointmentForm,Appointments
+  AppointmentForm,Appointments,Departments,Doctors,Schedules
 } from './pages'
 import { Toaster } from 'react-hot-toast'
 

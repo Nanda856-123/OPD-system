@@ -3,11 +3,11 @@ const router = express.Router();
 
 const Department = require('../model/Department');
 const Doctor = require('../model/Doctor');
-const { authenticate, authorizeAdmin } = require('../middleware/authMiddleware');
+// const { authenticate, authorizeAdmin } = require('../middleware/authMiddleware');
 
 // Apply authentication + admin check to all admin routes
-router.use(authenticate);
-router.use(authorizeAdmin);
+// router.use(authenticate);
+// router.use(authorizeAdmin);
 
 /* Departments */
 // Create
