@@ -2,20 +2,20 @@ import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow
 import React, { useEffect, useState } from 'react'
 import Sidebar from './Sidebar'
 import { Link, useNavigate } from 'react-router-dom'
-import axios from 'axios'
 import toast from 'react-hot-toast'
 import Button from '../../components/Button'
 import AddIcon from '@mui/icons-material/Add';
 import { FaUsers } from "react-icons/fa";
 import { FaEdit } from "react-icons/fa";
 import { SlCalender } from "react-icons/sl";
+import axiosInstance from '../../axiosinterceptor'
 
 
 const Appointments = () => {
   const navigate=useNavigate();
   const [appointments, setAppointments] = useState([])
   useEffect(()=>{
-    axios.get('http://localhost:3000/appointments').then((res)=>{
+    axiosInstance.get('/appointments').then((res)=>{
         setAppointments(res.data)
         // {
         // "_id": "...",
@@ -59,7 +59,7 @@ const Appointments = () => {
                     <h5 className="card-title text-uppercase text-muted">
                       Appointments
                     </h5>
-                    <span className="h2 font-weight-bold">49</span>
+                    <span className="h2 font-weight-bold">{appointments?.length}</span>
                   </div>
                   <div className="col-auto">
                     <div className="icon-shape bg-danger text-white shadow">
@@ -74,7 +74,7 @@ const Appointments = () => {
           <div className="container">
             <div className="row">
               <div className="w-100">
-                <div className="home_employee-lists m-4">
+                <div className="m-4">
                   <div className="mb-3 mt-5">
                     <Link to="/appointment-form">
                       <Button>
