@@ -3,8 +3,9 @@ const router=express.Router();
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 const AppointmentModel=require("../model/Appointment");
+const verifyToken = require('../middleware/verifyToken')
 
-router.get('/',async(req,res)=>{
+router.get('/',verifyToken,async(req,res)=>{
     try{
         const appointments=await AppointmentModel.find()
         .populate('doctor_id','name')
@@ -15,7 +16,7 @@ router.get('/',async(req,res)=>{
         res.status(404).send('Error fetching appointments');
     }
 })
-router.post('/addAppointment',async(req,res)=>{
+router.post('/addAppointment',verifyToken,async(req,res)=>{
     try{
         const appointment=req.body;
         await AppointmentModel.create(appointment);
@@ -25,7 +26,7 @@ router.post('/addAppointment',async(req,res)=>{
         res.status(404).send('Error in booking appointment');
     }
 })
-router.put('/edit/:id',async(req,res)=>{
+router.put('/edit/:id',verifyToken,async(req,res)=>{
     try{
         const id=req.params.id;
         await AppointmentModel.findByIdAndUpdate(id,req.body);

@@ -9,6 +9,11 @@ import { IoLogOutOutline } from "react-icons/io5";
 
 
 const Sidebar = ({ sidebarOpen }) => {
+  const onLogoutHandler=()=>{
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
+
+  }
   return (
     <div className={`sidebar bg-white ${sidebarOpen ? 'show' : ''}`}>
       <ul className='d-flex flex-column h-100' style={{ marginTop: '7px' }}>
@@ -38,7 +43,7 @@ const Sidebar = ({ sidebarOpen }) => {
           </NavLink>
         </li>
         <li className='flex-grow-1 d-flex align-items-end w-100'>
-          <NavLink to="/" className={`w-100 ${({ isActive }) => (isActive ? 'active prim-bg' : '')}`}>
+          <NavLink onClick={onLogoutHandler} to="/" className={`w-100 ${({ isActive }) => (isActive ? 'active prim-bg' : '')}`}>
             <IoLogOutOutline/><span className='m-3'>Logout</span>
           </NavLink>
         </li>
