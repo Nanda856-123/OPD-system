@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import Button from './Button';
 import toast from 'react-hot-toast';
-import { useNavigate,useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import {Card,  CardContent,CardHeader,Grid,TextField,MenuItem,FormControl,InputLabel,Select,Box,Typography,} from "@mui/material";
+import Button from './Button';
+
 
 const PatientForm = () => {
-  const location=useLocation();
+  const location = useLocation();
   const navigate = useNavigate();
-   const [patient, setPatient] = useState({
+
+  const [patient, setPatient] = useState({
     name: "",
     gender: "",
     age: "",
@@ -16,118 +19,175 @@ const PatientForm = () => {
     contact_number: "",
     registered_date: ""
   });
-  useEffect(()=>{
-    if(location.state!==null){
-        setPatient({
-             name: location.state.currPatient.name,
-            gender: location.state.currPatient.gender,
-            age: location.state.currPatient.age,
-            email: location.state.currPatient.email,
-            address: location.state.currPatient.address,
-            contact_number: location.state.currPatient.contact_number,
-            registered_date: location.state.currPatient.registered_date
-        })
-    }else{
-        setPatient({
-            name: "",
-            gender: "",
-            age: "",
-            email: "",
-            address: "",
-            contact_number: "",
-            registered_date: ""
-        })
+
+  useEffect(() => {
+    if (location.state !== null) {
+      setPatient({ ...location.state.currPatient });
+    } else {
+      setPatient({
+        name: "",
+        gender: "",
+        age: "",
+        email: "",
+        address: "",
+        contact_number: "",
+        registered_date: ""
+      });
     }
-  },[])
- 
+  }, []);
 
   const inputHandler = (e) => {
     setPatient({ ...patient, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // prevent page reload
+    e.preventDefault();
 
-   if(location.state!==null){
-     try {
-      const res = await axios.put(`http://localhost:3000/patient/edit/${location.state.currPatient._id}`,patient);
+    try {
+      let res;
+      if (location.state !== null) {
+        res = await axios.put(
+          `http://localhost:3000/patient/edit/${location.state.currPatient._id}`,
+          patient
+        );
+      } else {
+        res = await axios.post(
+          'http://localhost:3000/patient/regPatient',
+          patient
+        );
+      }
+
       toast.success(res.data.message);
       navigate('/patients');
+
     } catch (error) {
-      if (error.response && error.response.data) {
-        toast.error(error.response.data.message);
-      } else {
-        alert(error.message);
-      }
+      if (error.response?.data) toast.error(error.response.data.message);
+      else alert(error.message);
     }
-   }else{
-     try {
-      const res = await axios.post('http://localhost:3000/patient/regPatient', patient);
-      toast.success(res.data.message);
-      navigate('/patients');
-    } catch (error) {
-      if (error.response && error.response.data) {
-        toast.error(error.response.data.message);
-      } else {
-        alert(error.message);
-      }
-    }
-   }
   };
 
   return (
-    <div className="card">
-      <h4 className='mb-4' style={{textAlign:'center'}}>Register Patient</h4>
-      <form className="form" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Full Name"
-          name="name"
-          value={patient.name}
-          onChange={inputHandler}
+    <Box className='patient-form' mt={5}>
+      <Card sx={{ borderRadius: 3, boxShadow: 4 ,padding:'20px'}}>
+        <CardHeader
+          title={
+            <Typography variant="h6" fontWeight={700} textAlign="center">
+              {location.state ? "Edit Patient" : "Register Patient"}
+            </Typography>
+          }
+          sx={{ background: "#f5f5f5", borderBottom: "1px solid #ddd" }}
         />
-        <input
-          type="email"
-          placeholder="Email"
-          name="email"
-          value={patient.email}
-          onChange={inputHandler}
-        />
-        <select name="gender" value={patient.gender} onChange={inputHandler}>
-          <option value="">Select Gender</option>
-          <option value="Male">Male</option>
-          <option value="Female">Female</option>
-          <option value="Other">Other</option>
-        </select>
-        <input
-          type="number"
-          placeholder="Age"
-          name="age"
-          value={patient.age}
-          onChange={inputHandler}
-        />
-        <input
-          type="number"
-          placeholder="Phone"
-          name="contact_number"
-          value={patient.contact_number}
-          onChange={inputHandler}
-        />
-        <textarea
-          placeholder="Address"
-          name="address"
-          value={patient.address}
-          onChange={inputHandler}
-        ></textarea>
-        <input
-          type="date"
-          name="registered_date"
-          value={patient.registered_date}
-          onChange={inputHandler}
-        />
-        <Button type="submit" disabled={!patient.name.trim()}>Register</Button>
-      </form>
-    </div>
+
+        <CardContent className='hello'>
+          <form onSubmit={handleSubmit}>
+            {/* <Grid container spacing={3}> */}
+              <div>
+
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  variant="standard"
+                  label="Full Name"
+                  name="name"
+                  value={patient.name}
+                  onChange={inputHandler}
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  variant="standard"
+                  label="Email"
+                  name="email"
+                  type="email"
+                  value={patient.email}
+                  onChange={inputHandler}
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <FormControl fullWidth variant="standard">
+                  <InputLabel>Gender</InputLabel>
+                  <Select
+                    name="gender"
+                    value={patient.gender}
+                    onChange={inputHandler}
+                    label="Gender"
+                  >
+                    <MenuItem value="">Select Gender</MenuItem>
+                    <MenuItem value="Male">Male</MenuItem>
+                    <MenuItem value="Female">Female</MenuItem>
+                    <MenuItem value="Other">Other</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  variant="standard"
+                  label="Age"
+                  name="age"
+                  type="number"
+                  value={patient.age}
+                  onChange={inputHandler}
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  variant="standard"
+                  label="Contact Number"
+                  name="contact_number"
+                  type="number"
+                  value={patient.contact_number}
+                  onChange={inputHandler}
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  variant="standard"
+                  label="Address"
+                  name="address"
+                  multiline
+                  rows={3}
+                  value={patient.address}
+                  onChange={inputHandler}
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  variant="standard"
+                  label="Registered Date"
+                  name="registered_date"
+                  type="date"
+                  InputLabelProps={{ shrink: true }}
+                  value={patient.registered_date}
+                  onChange={inputHandler}
+                />
+              </Grid>
+
+              <Grid item xs={12} textAlign="center" mt={2}>
+                <Button
+                  type="submit"
+                  disabled={!patient.name.trim()}
+                >
+                  {location.state ? "Update" : "Register"}
+                </Button>
+              </Grid>
+
+            {/* </Grid> */}
+            </div>
+          </form>
+        </CardContent>
+      </Card>
+    </Box>
   );
 };
 
