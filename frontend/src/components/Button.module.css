@@ -1,13 +1,30 @@
-button{
-    background: #1E92D4;
-    color: #fff;
-    border: none;
-    padding: 10px;
-    min-width: 100px;
-    font-size: 20px;
-    border-radius: 10px;
+.btn {
+  padding: 12px 30px;
+    margin: .3125rem 1px;
+    min-width: auto;
+    font-size: .75rem;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-decoration: none;
+    text-transform: uppercase;
+    vertical-align: middle;
+    letter-spacing: 0;
     cursor: pointer;
-}
-button:hover{
-    background: #1D74A6;
+    background-color: transparent;
+    border: 0;
+    border-radius: .2rem;
+    outline: 0;
+    -webkit-transition: box-shadow .2s 
+cubic-bezier(.4, 0, 1, 1), background-color .2s 
+cubic-bezier(.4, 0, .2, 1);
+    transition: box-shadow .2s 
+cubic-bezier(.4, 0, 1, 1), background-color .2s 
+cubic-bezier(.4, 0, .2, 1);
+    will-change: box-shadow, transform;
+    color: #fff;
+    background-color: #5e72e4;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+  }
+.btn:hover{
+  background-color: #805ee4;
 }

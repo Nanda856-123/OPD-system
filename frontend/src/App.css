@@ -1,0 +1,60 @@
+ul li{
+    list-style: none
+}
+h1, h2, h3, h4, h5, h6,p{
+    margin: 0;
+    padding: 0;
+}
+.prim-colour{
+    color: #5e72e4 !important;
+}
+.prim-bg{
+    color: #fff !important;
+    background-color: #5e72e4;
+}
+.prim-bg:hover{
+    background-color: #805ee4;
+}
+.text-muted {
+    color: #8898aa !important;
+}
+.action-btn{
+    border: none;
+    border-radius: 5px;
+    padding: 5px 14px;
+}
+.btn-view{
+    background-color: #0080004a !important;
+}
+.btn-view a{
+    color: green !important;
+}
+.btn-edit{
+background-color: #6651c926 !important;
+}
+.btn-edit a{
+    color: #4337a4 !important;
+}
+.btn-dlt{
+ background-color: #ff00001f !important;
+}
+.btn-dlt a{
+    color: red !important;
+}
+.bg-blue{
+    background-color: #e91e63 !important;
+}
+.popup{
+  position: fixed;
+    width: 100%;
+    background: #24262bbf;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+

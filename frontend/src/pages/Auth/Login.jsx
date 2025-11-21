@@ -1,98 +1,116 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 import { Typography, TextField, Box } from '@mui/material';
 import axios from 'axios';
 import Button from '../../components/Button';
 import { useNavigate } from 'react-router-dom';
-import toast from 'react-hot-toast'
+import toast from 'react-hot-toast';
+import  './Login.css';
+import { MdOutlineEmail } from "react-icons/md";
 
+
+// Validation Schema
+const schema = yup.object().shape({
+  email: yup
+    .string()
+    .email("Invalid email format")
+    .required("Email is required"),
+  password: yup
+    .string()
+    .min(6, "Password must be at least 6 characters")
+    .required("Password is required"),
+});
 
 const Login = () => {
-    const navigate = useNavigate();
-   let[loginData, setLoginData]=useState({
-      email:'',
-      password:''
-    })
-    const inputHandler=(e)=>{
-        setLoginData({...loginData,[e.target.name]:e.target.value})
-    }
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  // React Hook Form 
+  const { 
+    register, 
+    handleSubmit, 
+    formState: { errors }
+  } = useForm({
+    resolver: yupResolver(schema)
+  });
 
-    axios.post('http://localhost:3000/auth/login',loginData).then((res) => {
-      console.log("LOGIN RESPONSE =", res.data);
-        toast.success(res.data.message)
-        let token=res.data.token
-        let user=res.data.user
-        if(token){
-            localStorage.setItem('token',token)
-            localStorage.setItem('user',JSON.stringify(user))
-                // role based navigation
-                if(res.data.user.role === "admin"){
-                    navigate('/admin-dashboard')
-                } 
-                else if(res.data.user.role === "Doctor"){
-                    navigate('/doctor-dashboard')
-                }
-                else if(res.data.user.role === "Receptionist"){
-                    navigate('/reception-dashboard')
-                }
+  const onSubmit = (loginData) => {
+    axios.post('http://localhost:3000/auth/login', loginData)
+      .then((res) => {
+        toast.success(res.data.message);
+        let token = res.data.token;
+        let user = res.data.user;
+
+        if (token) {
+          localStorage.setItem('token', token);
+          localStorage.setItem('user', JSON.stringify(user));
+
+          if (user.role === "Admin") navigate('/admin-dashboard');
+          if (user.role === "Doctor") navigate('/doctor-dashboard');
+          if (user.role === "Receptionist") navigate('/reception-dashboard');
         }
       })
       .catch((error) => {
-        if(error.response && error.response.data){
-            toast.error(error.response.data.message)
-        }else{
-            toast.error(error.message)
+        if (error.response && error.response.data) {
+          toast.error(error.response.data.message);
+        } else {
+          toast.error(error.message);
         }
       });
   };
 
   return (
-    <Box
+    <div className='login-page'>
+      <div className="overlay-top"><h4>Welcome!!</h4></div>
+      <div className="overlay-bottom"></div>
+       <Box
       component="form"
-      onSubmit={handleSubmit}
+      onSubmit={handleSubmit(onSubmit)}
       sx={{
         maxWidth: '500px',
         margin: '0 auto',
         background: '#fff',
-        marginTop: '10%',
         padding: 5,
         borderRadius: '10px',
         textAlign: 'center',
+        position: 'relative',
+        width: '100%'
       }}
     >
-      <Typography sx={{ textAlign: 'center', fontWeight: '600' }} className="prim-color" variant="h5">
-        Login
-      </Typography>
+      <div className="box-icon"><MdOutlineEmail/></div>
+        <h4 className='prim-colour'>Login</h4>
       <br />
 
       <TextField
-  fullWidth
-  label="Email"
-  value={loginData.email}
-  onChange={inputHandler}
-  name="email"
-  autoComplete="off"
-/>
+      variant="standard"
+        fullWidth
+        label="Email"
+        {...register("email")}
+        error={!!errors.email}
+        helperText={errors.email?.message}
+      />
 
-<br /><br />
+      <br /><br />
 
-<TextField
-  fullWidth
-  type="password"
-  label="Password"
-  value={loginData.password}
-  onChange={inputHandler}
-  name="password"
-  autoComplete="new-password"
-/>
+     
+      <TextField
+      variant="standard"
+        fullWidth
+        type="password"
+        label="Password"
+        {...register("password")}
+        error={!!errors.password}
+        helperText={errors.password?.message}
+      />
 
-<br /><br />
-      <Button btnHandler={handleSubmit}>
+      <br /><br />
+      <Button type="submit">
         Login
       </Button>
     </Box>
+    </div>
+   
   );
 };
 

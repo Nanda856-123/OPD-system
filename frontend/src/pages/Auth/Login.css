@@ -1,0 +1,45 @@
+.login-page{
+    width: 100%;
+    height: 100vh;
+    /* display: flex; */
+    justify-content: center;
+    align-items: center;
+    background-color: #172b4d
+}
+.login-card{
+    position: absolute;
+    top: -64px;
+    color: #fff;
+    height: 100px;
+    justify-content: center;
+}
+.overlay-top{
+    min-height: 205px;
+    background: linear-gradient(263deg, #5e72e4 0, #825ee4 100%) !important;
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+}
+.overlay-bottom{
+    min-height: 252px;
+    transform: rotate(354deg);
+    background: linear-gradient(263deg, #5e72e4 0, #825ee4 100%) !important;
+    position: absolute;
+    left: -60px;
+    top: 0;
+    width: 94%;
+}
+.box-icon{
+    width: 68px;
+    height: 50px;
+    background: #172b4d;
+    position: absolute;
+    top: -26px;
+    z-index: 2;
+    color: #fff;
+    font-size: 28px;
+    text-align: center;
+}
