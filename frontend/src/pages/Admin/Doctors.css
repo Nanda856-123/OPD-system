@@ -1,0 +1,32 @@
+.doctor-page-container {
+  padding: 40px;
+}
+
+.doctor-title {
+  margin-bottom: 20px;
+}
+
+.add-btn {
+  margin-bottom: 20px !important;
+}
+
+.doctor-table {
+  background: #fff;
+  border-radius: 10px;
+}
+
+.table-header {
+  background: #f0f0f0;
+}
+
+.edit-btn {
+  margin-right: 10px !important;
+}
+
+.popup-content {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+
