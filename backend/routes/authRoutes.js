@@ -1,90 +1,27 @@
-const express = require('express');
-const router = express.Router();
-const userModel = require('../model/User');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
+const express= require('express')
+const router=express.Router()
+const userModel=require('../model/User')
+const jwt=require('jsonwebtoken')
 
-// REGISTER ROUTE
-// ---------------------------
-router.post('/register', async (req, res) => {
-  try {
-    console.log("Register Request:", req.body);
-
-    const { name, email, password, role } = req.body;
-
-    // check if user already exists
-    const existingUser = await userModel.findOne({ email });
-    if (existingUser) {
-      return res.status(400).send({ message: "User already exists" });
+router.post("/login", async(req,res)=>{
+    try{
+        console.log("Login Request Body:", req.body);
+    const user= await userModel.findOne({email:req.body.email})
+    if(!user){
+      return  res.status(404).send({message:"user not found"})
+    }else{
+        if(user.password===req.body.password){
+            let payload={email:user.email,password:user.password}
+            const token=jwt.sign(payload,'opd_secret_key')
+              res.status(200).send({message:"login successful",token:token,user:user})
+        }else{
+              res.status(401).send({message:"invalid credential"})
+        }
     }
 
-    // hash password
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // create new user
-    const newUser = new userModel({
-      name,
-      email,
-      password: hashedPassword,
-      role: role || "admin" // default role = admin
-    });
-
-    await newUser.save();
-
-    return res.status(201).send({
-      message: "User registered successfully",
-      user: newUser
-    });
-
-  } catch (error) {
-    console.error("Register Error:", error);
-    return res.status(500).send({ message: "Server error" });
-  }
-});
-
-
-// LOGIN ROUTE
-// ---------------------------
-router.post('/login', async (req, res) => {
-  try {
-    console.log("Login Request:", req.body);
-
-    const { email, password } = req.body;
-
-    // check if user exists
-    const user = await userModel.findOne({ email });
-    if (!user) {
-      return res.status(404).send({ message: "User not found" });
+    }catch(error){
+        res.status(500).send("server error")
     }
+})
 
-    // validate password
-    const isPasswordMatch = await bcrypt.compare(password, user.password);
-    if (!isPasswordMatch) {
-      return res.status(401).send({ message: "Invalid credentials" });
-    }
-
-    // create jwt token
-    const payload = {
-      email: user.email,
-      role: user.role
-    };
-
-    const token = jwt.sign(
-      payload,
-      process.env.JWT_SECRET || 'opd_secret_key',
-      { expiresIn: '1d' }
-    );
-
-    return res.status(200).send({
-      message: "Login successful",
-      token,
-      user
-    });
-
-  } catch (error) {
-    console.error("Login Error:", error);
-    return res.status(500).send({ message: "Server error" });
-  }
-});
-
-module.exports = router;
+module.exports=router
