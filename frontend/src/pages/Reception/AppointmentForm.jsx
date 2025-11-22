@@ -21,7 +21,7 @@ const AppointmentForm = () => {
           doctor_id: location.state.appointment.doctor_id?._id || "",
           appointment_date: location.state.appointment.appointment_date || "",
           time_slot: location.state.appointment.time_slot || "",
-          token_number: location.state.appointment.token_number || "",
+         // token_number: location.state.appointment.token_number || "",
           status: location.state.appointment.status || "scheduled",
           registered_date: location.state.appointment.registered_date || "",
           created_by: JSON.parse(receptionist)._id,
