@@ -65,7 +65,7 @@ const AppointmentForm = () => {
         axiosInstance.post('/appointments/addAppointment', appointment)
           .then(res => {
             toast.success(res.data.message);
-            navigate('/reception-dashboard');
+            navigate('/appointments');
           })
           .catch(error => {
             toast.error(error.response?.data?.message || error.message);
