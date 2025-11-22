@@ -10,7 +10,7 @@ import { FaEdit } from "react-icons/fa";
 import { SlCalender } from "react-icons/sl";
 import { MdDeleteOutline } from "react-icons/md";
 import DeletePopup from '../../components/DeletePopup';
-
+import axiosInstance from '../../axiosinterceptor'
 
 const Appointments = () => {
   const navigate=useNavigate();
@@ -50,7 +50,7 @@ const [currAppointment, setCurrAppointment] = useState(null);
   };
 
   const confirmDeleteHandler = () => {
-    axios.delete(`http://localhost:3000/appointments/delete/${currAppointment._id}`)
+    axiosInstance.delete(`/appointments/delete/${currAppointment._id}`)
       .then((res) => {
         toast.success(res.data.message);
         setAppointments(appointments.filter(a => a._id !== currAppointment._id))
