@@ -55,7 +55,31 @@
 .top-bar {
   display: none;
 }
-
+.user-details-card{
+    max-width: 500px !important;
+    margin: 0 auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+.user-avatar{
+    border-radius: 50%;
+    width: 200px;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin: 15px auto;
+    color: #fff;
+    font-size: 45px;
+    border: 1px solid;
+}
+.user_personal-info ul li, .user_history-info ul li{
+    display: flex;
+    justify-content: space-between;
+}
 @media (max-width: 768px) {
   .top-bar {
     display: flex;
