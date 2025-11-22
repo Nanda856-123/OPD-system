@@ -8,7 +8,8 @@ import AddIcon from '@mui/icons-material/Add';
 import { FaUsers } from "react-icons/fa";
 import { FaEdit } from "react-icons/fa";
 import { SlCalender } from "react-icons/sl";
-import axiosInstance from '../../axiosinterceptor'
+import { MdDeleteOutline } from "react-icons/md";
+import DeletePopup from '../../components/DeletePopup';
 
 
 const Appointments = () => {
@@ -36,6 +37,40 @@ const Appointments = () => {
   const editAppointmentHandler=(appointment)=>{
     navigate('/appointment-form',{state:{appointment}})
   }
+
+ 
+const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
+const [currAppointment, setCurrAppointment] = useState(null);
+
+
+// delete functionality
+      const deleteAppointmentHandler = (appointment) => {
+    setIsDeletePopupOpen(true);
+    setCurrAppointment(appointment);
+  };
+
+  const confirmDeleteHandler = () => {
+    axios.delete(`http://localhost:3000/appointments/delete/${currAppointment._id}`)
+      .then((res) => {
+        toast.success(res.data.message);
+        setAppointments(appointments.filter(a => a._id !== currAppointment._id))
+        setIsDeletePopupOpen(false);
+      })
+      .catch((error) => {
+        if (error.response && error.response.data) {
+          toast.error(error.response.data.message);
+        } else {
+          alert(error.message);
+        }
+      })
+  };
+
+  const cancelDeleteHandler = () => {
+    setIsDeletePopupOpen(false);
+    setCurrAppointment(null);
+  };
+
+
   return (
     <div>
       <div className="main-container">
@@ -127,6 +162,12 @@ const Appointments = () => {
                                 >
                                   <Link to=""><FaEdit/></Link>
                                 </button>
+
+                                <button
+                                  onClick={() => deleteAppointmentHandler(appointment)}
+                                  className="btn-dlt action-btn mb-2">
+                                  <MdDeleteOutline />
+                                </button>
                               </TableCell>
                             </TableRow>
                           ))
@@ -146,6 +187,15 @@ const Appointments = () => {
           </div>
         </div>
       </div>
+
+      {/* DELETE POPUP */}
+      {isDeletePopupOpen && (
+        <DeletePopup
+          item={currAppointment}
+          confirmDeleteHandler={confirmDeleteHandler}
+          cancelDeleteHandler={cancelDeleteHandler}
+        />
+      )}
     </div>
   );
 }
