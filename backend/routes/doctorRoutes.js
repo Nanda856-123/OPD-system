@@ -3,8 +3,10 @@ const router=express.Router();
 router.use(express.json())
 router.use(express.urlencoded({ extended: true }));
 const DoctorModel=require("../model/Doctor")
+const verifyToken = require('../middleware/verifyToken')
 
-router.get('/',async(req,res)=>{
+
+router.get('/',verifyToken,async(req,res)=>{
     try{
         const doctors=await DoctorModel.find()
         .populate('department', 'name');

@@ -3,10 +3,16 @@ import { FaUsers } from "react-icons/fa";
 import { SlCalender } from "react-icons/sl";
 import { FaUserDoctor } from "react-icons/fa6";
 import { MdOutlineGeneratingTokens } from "react-icons/md";
+import { CgProfile } from "react-icons/cg";
 
 const ReceptionPageTitle = () => {
+  const user = JSON.parse(localStorage.getItem("user"));
   return (
     <div className="dashboard-title">
+          <div className='text-lg-end'>
+            <CgProfile className='fs-1 m-2'/>
+            <span>{user.name}</span>
+          </div>
             <h4 className='mt-5 mb-5'>Dashboard</h4>
             <div className="container-fluid">
                 <div className="header-body">

@@ -41,6 +41,9 @@ background-color: #6651c926 !important;
 .btn-dlt a{
     color: red !important;
 }
+.btn-view{
+    color: green;
+}
 .bg-blue{
     background-color: #e91e63 !important;
 }

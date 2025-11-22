@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react'
 import Button from '../../components/Button';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Link,useNavigate,useLocation } from 'react-router-dom';
-import axios from 'axios';
 import toast from 'react-hot-toast';
 import { IoArrowBack } from "react-icons/io5";
 import { Box, Card, CardContent, CardHeader, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
 import Sidebar from './Sidebar';
+import axiosInstance from '../../axiosinterceptor'
 
 const AppointmentForm = () => {
     const navigate = useNavigate();
@@ -40,7 +40,7 @@ const AppointmentForm = () => {
         };
     const [appointment, setAppointment] = useState(initialAppointment);
     useEffect(() => {
-      axios.all([ axios.get('http://localhost:3000/doctor'),axios.get('http://localhost:3000/patient')])
+      Promise.all([ axiosInstance.get('/doctor'),axiosInstance.get('/patient')])
         .then(([docsRes, patsRes]) => {
           setDoctors(docsRes.data || []);
           setPatients(patsRes.data || []);
@@ -49,10 +49,11 @@ const AppointmentForm = () => {
           toast.error(error.response?.data?.message || error.message);
         });
     }, []);
-    const handleSubmit = () => {
+    const handleSubmit = (e) => {
+      e.preventDefault();
       if (location.state && location.state.appointment) {
         //edit
-        axios.put(`http://localhost:3000/appointments/edit/${location.state.appointment._id}`, appointment).then(res => {
+        axiosInstance.put(`/appointments/edit/${location.state.appointment._id}`, appointment).then(res => {
             toast.success(res.data.message);
             navigate('/appointments');
         })
@@ -61,7 +62,7 @@ const AppointmentForm = () => {
           });
       }else{
         //add
-        axios.post('http://localhost:3000/appointments/addAppointment', appointment)
+        axiosInstance.post('/appointments/addAppointment', appointment)
           .then(res => {
            // toast.success(res.data.message);
            toast.success(`Appointment booked! Token: ${res.data.token_number}`);

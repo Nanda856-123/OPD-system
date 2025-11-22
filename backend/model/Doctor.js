@@ -11,3 +11,4 @@ const DoctorSchema=mongoose.Schema({
 
 const DoctorData=mongoose.model('doctor',DoctorSchema);
 module.exports=DoctorData;
+

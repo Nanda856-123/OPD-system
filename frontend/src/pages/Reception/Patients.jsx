@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 import '../Reception/ReceptionDashboard.css'
 import { Link,useNavigate } from 'react-router-dom'
 import Button from '../../components/Button'
@@ -11,6 +10,8 @@ import DeletePopup from '../../components/DeletePopup'
 import { FaUsers } from "react-icons/fa";
 import { FaEdit } from "react-icons/fa";
 import { MdDeleteOutline } from "react-icons/md";
+import axiosIntance from '../../axiosinterceptor'
+import { FaEye } from "react-icons/fa";
 
 const Patients = () => {
   const navigate=useNavigate();
@@ -30,7 +31,7 @@ const Patients = () => {
   const fetchPatients = async () => {
     try {
       setLoading(true)
-      const response = await axios.get('http://localhost:3000/patient')
+      const response = await axiosIntance.get('/patient')
       setPatients(response.data)
       setError(null)
     } catch (err) {
@@ -53,7 +54,7 @@ const deletePatientHandler=(currPatient)=>{
     setCurrPatient(currPatient);
 }
 const confirmDeleteHandler=()=>{
-    axios.delete(`http://localhost:3000/patient/delete/${currPatient._id}`,).then((res)=>{
+    axiosIntance.delete(`/patient/delete/${currPatient._id}`,).then((res)=>{
         toast.success(res.data.message);
         setPatients(patients.filter((patient)=>patient._id!==currPatient._id))
         setIsDeletePopupOpen(false);
@@ -97,7 +98,7 @@ const editPatientHandler=(currPatient)=>{
                     <h5 className="card-title text-uppercase text-muted">
                       Patients
                     </h5>
-                    <span className="h2 font-weight-bold">49</span>
+                    <span className="h2 font-weight-bold">{patients?.length}</span>
                   </div>
                   <div className="col-auto">
                     <div className="icon-shape bg-success text-white shadow">
@@ -113,7 +114,7 @@ const editPatientHandler=(currPatient)=>{
           <div className="container">
             <div className="row">
               <div className="w-100">
-                <div className="home_employee-lists m-4">
+                <div className="m-4">
                   <div className="mb-3 mt-5">
                     <Link to="/add-patient">
                       <Button>
@@ -122,7 +123,7 @@ const editPatientHandler=(currPatient)=>{
                     </Link>
                   </div>
                   <TableContainer component={Paper}>
-                    <Table sx={{ minWidth: 650 }} aria-label="employees table">
+                    <Table sx={{ minWidth: 650 }} aria-label="patient table">
                       <TableHead className='prim-bg'>
                         <TableRow>
                           <TableCell>SL No</TableCell>
@@ -150,13 +151,18 @@ const editPatientHandler=(currPatient)=>{
                               <TableCell>{patient.address}</TableCell>
                               <TableCell>{patient.registered_date}</TableCell>
                               <TableCell>{patient.email}</TableCell>
-                              <TableCell>
-                                {/* <button className="btn-view action-btn mb-2" variant="text">
-                          <Link to=''>View</Link>
-                        </button> */}
+                              <TableCell className='d-flex'>
+                                <button
+                                  className="btn-view action-btn m-2"
+                                  variant="text"
+                                >
+                                  <Link to={`/patients/${patient._id}`}>
+                                    <FaEye />
+                                  </Link>
+                                </button>
                                 <button
                                   onClick={() => editPatientHandler(patient)}
-                                  className="btn-edit action-btn mb-2"
+                                  className="btn-edit action-btn m-2"
                                   variant="text"
                                 >
                                   <Link to="">
@@ -165,13 +171,14 @@ const editPatientHandler=(currPatient)=>{
                                 </button>
                                 <button
                                   onClick={() => deletePatientHandler(patient)}
-                                  className="btn-dlt action-btn mb-2"
+                                  className="btn-dlt action-btn m-2"
                                   variant="text"
                                 >
                                   <Link to="">
                                     <MdDeleteOutline />
                                   </Link>
                                 </button>
+                                
                               </TableCell>
                             </TableRow>
                           ))

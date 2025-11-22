@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import Button from '../../components/Button'
-import axios from 'axios'
 import toast from 'react-hot-toast'
+import axiosInstance from '../../axiosinterceptor' 
 
 const DoctorCard = () => {
       const [doctors, setDoctors] = useState([])
       useEffect(() => {
-        axios.get('http://localhost:3000/doctor').then((res)=>{
+        axiosInstance.get('/doctor').then((res)=>{
             setDoctors(res.data)
         })
         .catch((error)=>{
@@ -19,22 +19,22 @@ const DoctorCard = () => {
       },[])
   return (
     <>
-      <div class="card shadow mt-5">
-        <div class="card-header border-0 p-3">
-          <div class="row align-items-center">
-            <div class="col">
-              <h6 class="mb-0">AVAILABLE DOCTORS</h6>
+      <div className="card shadow mt-5">
+        <div className="card-header border-0 p-3">
+          <div className="row align-items-center">
+            <div className="col">
+              <h6 className="mb-0">AVAILABLE DOCTORS</h6>
             </div>
-            <div class="col text-end">
-              <a href="#!" class="btn btn-sm prim-bg">
+            <div className="col text-end">
+              <a href="#!" className="btn btn-sm prim-bg">
                 See all
               </a>
             </div>
           </div>
         </div>
-        <div class="table-responsive">
-          <table class="table align-items-center table-flush">
-            <thead class="thead-light">
+        <div className="table-responsive">
+          <table className="table align-items-center table-flush">
+            <thead className="thead-light">
               <tr>
                 <th scope="col">SL NO</th>
                 <th scope="col">Doctors</th>
@@ -46,7 +46,7 @@ const DoctorCard = () => {
                 <tr key={doctor._id}>
                   <th scope="row">{index + 1}</th>
                   <td>{doctor.name}</td>
-                  <td>{doctor.department_id?.department_name}</td>
+                  <td>{doctor.department?.name}</td>
                 </tr>
               ))}
             </tbody>
