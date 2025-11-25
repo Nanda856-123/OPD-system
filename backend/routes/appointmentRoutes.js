@@ -10,7 +10,7 @@ router.get('/',verifyToken,async(req,res)=>{
     try{
         const appointments=await AppointmentModel.find()
         .populate('doctor_id','name')
-        .populate('patient_id','name')
+        .populate('patient_id','name opd_id')
         res.status(200).send(appointments);
     }
     catch(error){

@@ -7,6 +7,34 @@ const AppointmentModel=require("../model/Appointment")
 const verifyToken = require('../middleware/verifyToken')
 
 
+// Generate Unique OPD ID: DDMMYYYY + counter
+async function generateOPDId() {
+  const now = new Date();
+
+  const day = String(now.getDate()).padStart(2, "0");
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const year = now.getFullYear();
+
+  const datePrefix = `${day}${month}${year}`;  // 25112025
+
+  // Count how many patients registered today (for counter)
+  const start = new Date(now);
+  start.setHours(0, 0, 0, 0);
+
+  const end = new Date(now);
+  end.setHours(23, 59, 59, 999);
+
+  const countToday = await PatientModel.countDocuments({
+    registered_date: { $gte: start, $lte: end }
+  });
+
+  const opdId = `${datePrefix}${countToday}`;
+
+  return opdId;
+}
+
+
+
 router.get('/',verifyToken, async(req, res) => {
     try {
         const patients = await PatientModel.find();
@@ -57,5 +85,59 @@ router.get('/:id',verifyToken, async(req, res)=>{
         res.status(500).send('Server error')
     }
 })
+// route for combined form
+router.post('/registerPatientWithAppointment', verifyToken, async (req, res) => {
+  try {
+    const { patientData, appointmentData } = req.body;
+
+    if (!patientData || !appointmentData) {
+      return res.status(400).send({ message: "patientData and appointmentData required" });
+    }
+
+    //Generate OPD ID and attach to patient data
+    const opd_id = await generateOPDId();
+    patientData.opd_id = opd_id;
+
+    // Create Patient
+    const newPatient = await PatientModel.create(patientData);
+
+    //Prepare Appointment
+    appointmentData.patient_id = newPatient._id;
+
+    const doctor_id = appointmentData.doctor_id;
+    const appointment_date_raw = appointmentData.appointment_date;
+
+    if (!doctor_id || !appointment_date_raw) {
+      return res.status(400).send({ message: "doctor_id and appointment_date required" });
+    }
+
+    const dateStart = new Date(appointment_date_raw);
+    dateStart.setHours(0, 0, 0, 0);
+
+    const dateEnd = new Date(appointment_date_raw);
+    dateEnd.setHours(23, 59, 59, 999);
+
+    const count = await AppointmentModel.countDocuments({
+      doctor_id,
+      appointment_date: { $gte: dateStart, $lte: dateEnd }
+    });
+
+    appointmentData.token_number = count + 1;
+    appointmentData.appointment_date = dateStart;
+
+    //Save Appointment
+    const newAppointment = await AppointmentModel.create(appointmentData);
+
+    res.status(200).send({
+      message: "Patient & Appointment created successfully",
+      patient: newPatient,
+      appointment: newAppointment
+    });
+
+  } catch (error) {
+    console.error("Error registerPatientWithAppointment:", error);
+    res.status(500).send({ message: 'Error creating patient + appointment' });
+  }
+}); 
 
 module.exports=router
