@@ -129,7 +129,7 @@ const [currAppointment, setCurrAppointment] = useState(null);
                           <TableCell>OPD ID</TableCell>
                           <TableCell>Patient Name</TableCell>
                           <TableCell>Doctor Name</TableCell>
-                          <TableCell>Appointment Data</TableCell>
+                          <TableCell>Appointment Date</TableCell>
                           <TableCell>Time slot</TableCell>
                           <TableCell>Token Number</TableCell>
                           <TableCell>Schedule at</TableCell>
