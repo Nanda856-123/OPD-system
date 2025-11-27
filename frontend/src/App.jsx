@@ -5,6 +5,8 @@ import {Login, AdminDashboard, ReceptionDashboard, DoctorDashboard,Patients,Regi
 } from './pages'
 import { Toaster } from 'react-hot-toast'
 import PrivateRoutes from './components/PrivateRoutes'
+import CombinedForm from './pages/Reception/CombinedForm'
+import CombinedSummary from './pages/Reception/CombinedSummary'
 
 function App() {
 
@@ -26,6 +28,8 @@ function App() {
           <Route path='/appointments' element={<Appointments/>}/>
           <Route path='/appointment-form' element={<AppointmentForm/>}/>
           <Route path='/patients/:id' element={<PatientDetail/>}/>
+          <Route path='/register-patient-appointment' element={<CombinedForm/>}/>
+          <Route path='/combined-summary' element={<CombinedSummary/>}/>
         </Route>
       </Routes>
     </BrowserRouter>

@@ -6,6 +6,10 @@ const PatientSchema=mongoose.Schema({
     gender:String ,
     contact_number:String ,
     address:String ,
+    opd_id: {
+        type: String,
+        unique: true
+    },
     // registered_date:Date, default: Date.now 
     registered_date:{ type: Date, default: Date.now }
 

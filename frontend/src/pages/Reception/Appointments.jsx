@@ -111,10 +111,14 @@ const [currAppointment, setCurrAppointment] = useState(null);
               <div className="w-100">
                 <div className="m-4">
                   <div className="mb-3 mt-5">
-                    <Link to="/appointment-form">
+                  {/*   <Link to="/appointment-form">
                       <Button>
                         <AddIcon />
                       </Button>
+                    </Link> */}
+
+                    <Link to="/register-patient-appointment">
+                    <Button><AddIcon /></Button>
                     </Link>
                   </div>
                   <TableContainer component={Paper}>
@@ -122,9 +126,10 @@ const [currAppointment, setCurrAppointment] = useState(null);
                       <TableHead className='prim-bg'>
                         <TableRow>
                           <TableCell>SL No</TableCell>
+                          <TableCell>OPD ID</TableCell>
                           <TableCell>Patient Name</TableCell>
                           <TableCell>Doctor Name</TableCell>
-                          <TableCell>Appointment Data</TableCell>
+                          <TableCell>Appointment Date</TableCell>
                           <TableCell>Time slot</TableCell>
                           <TableCell>Token Number</TableCell>
                           <TableCell>Schedule at</TableCell>
@@ -139,6 +144,7 @@ const [currAppointment, setCurrAppointment] = useState(null);
                               <TableCell component="th" scope="row">
                                 {index + 1}
                               </TableCell>
+                              <TableCell>{appointment.patient_id?.opd_id}</TableCell>
                               <TableCell>
                                 {appointment.patient_id?.name}
                               </TableCell>

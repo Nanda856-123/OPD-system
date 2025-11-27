@@ -116,10 +116,14 @@ const editPatientHandler=(currPatient)=>{
               <div className="w-100">
                 <div className="m-4">
                   <div className="mb-3 mt-5">
-                    <Link to="/add-patient">
+                   {/*  <Link to="/add-patient">
                       <Button>
                         <AddIcon />
                       </Button>
+                    </Link> */}
+
+                    <Link to="/register-patient-appointment">
+                    <Button><AddIcon /></Button>
                     </Link>
                   </div>
                   <TableContainer component={Paper}>
@@ -127,6 +131,7 @@ const editPatientHandler=(currPatient)=>{
                       <TableHead className='prim-bg'>
                         <TableRow>
                           <TableCell>SL No</TableCell>
+                          <TableCell>OPD ID</TableCell>
                           <TableCell>NAME</TableCell>
                           <TableCell>AGE</TableCell>
                           <TableCell>GENDER</TableCell>
@@ -144,6 +149,7 @@ const editPatientHandler=(currPatient)=>{
                               <TableCell component="th" scope="row">
                                 {index + 1}
                               </TableCell>
+                              <TableCell>{patient.opd_id}</TableCell>
                               <TableCell>{patient.name}</TableCell>
                               <TableCell>{patient.age}</TableCell>
                               <TableCell>{patient.gender}</TableCell>
