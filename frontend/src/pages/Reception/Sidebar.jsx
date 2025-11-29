@@ -6,6 +6,7 @@ import { SlCalender } from "react-icons/sl";
 import { FaUsers } from "react-icons/fa";
 import { MdOutlineGeneratingTokens } from "react-icons/md";
 import { IoLogOutOutline } from "react-icons/io5";
+import HowToRegIcon from '@mui/icons-material/HowToReg';
 
 
 const Sidebar = ({ sidebarOpen }) => {
@@ -25,6 +26,11 @@ const Sidebar = ({ sidebarOpen }) => {
         <li>
           <NavLink to="/reception-dashboard"  className={({ isActive }) => (isActive ? 'active prim-bg' : '')}>
             <LuLayoutDashboard/> <span className='m-3'>Dashboard</span>
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/register-patient-appointment" className={({ isActive }) => (isActive ? 'active prim-bg' : '')}>
+            <HowToRegIcon/><span className='m-3'>Registration</span>
           </NavLink>
         </li>
         <li>

@@ -13,7 +13,7 @@ router.get('/',verifyToken,async(req,res)=>{
     try{
         const appointments=await AppointmentModel.find()
         .populate('doctor_id','name')
-        .populate('patient_id','name')
+        .populate('patient_id','name opd_id')
         res.status(200).send(appointments);
     }
     catch(error){
@@ -21,6 +21,53 @@ router.get('/',verifyToken,async(req,res)=>{
         res.status(404).send('Error fetching appointments');
     }
 })
+
+
+
+// Auto reset tokens every new day (doctor-wise & date-wise)
+router.post('/addAppointment', async (req, res) => {
+  try {
+    const { doctor_id, appointment_date } = req.body;
+
+    if (!doctor_id || !appointment_date) {
+      return res.status(400).send({ message: "Doctor and Appointment Date are required" });
+    }
+
+    // Normalize date for daily token reset
+    const dateStart = new Date(appointment_date);
+    dateStart.setHours(0, 0, 0, 0);
+
+    const dateEnd = new Date(appointment_date);
+    dateEnd.setHours(23, 59, 59, 999);
+
+    // Count existing tokens for doctor on the same day
+    const count = await AppointmentModel.countDocuments({
+      doctor_id,
+      appointment_date: { $gte: dateStart, $lte: dateEnd }
+    });
+
+    const token_number = count + 1;
+
+    const newAppointment = {
+      ...req.body,
+      appointment_date: dateStart,   // normalize storage
+      token_number
+    };
+
+    await AppointmentModel.create(newAppointment);
+
+    res.status(200).send({
+      message: "Appointment booked successfully",
+      token_number
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ message: "Error in booking appointment" });
+  }
+});
+
+
 
 router.post('/addAppointment',verifyToken,async(req,res)=>{
     try{
@@ -75,14 +122,6 @@ router.get("/doctor", verifyToken, async (req, res) => {
   }
 });
 
-/* ================= UPDATED HISTORY ROUTES (fixed — no `?` in path) ===================
-   Accepts:
-     - GET /appointments/history/:patientId
-     - GET /appointments/history?id=<patientId>
-   Always returns 200 with an array (empty if none). Protected by verifyToken.
-*/
-
-// 1) Path style
 router.get('/history/:patientId', verifyToken, async (req, res) => {
   const patientId = req.params.patientId;
   if (!patientId) {
@@ -165,6 +204,5 @@ router.get('/history', verifyToken, async (req, res) => {
     return res.status(500).json({ message: "Server error fetching history" });
   }
 });
-/* =============================================================================== */
 
 module.exports=router;

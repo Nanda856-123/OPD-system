@@ -21,7 +21,7 @@ const AppointmentForm = () => {
           doctor_id: location.state.appointment.doctor_id?._id || "",
           appointment_date: location.state.appointment.appointment_date || "",
           time_slot: location.state.appointment.time_slot || "",
-          token_number: location.state.appointment.token_number || "",
+         // token_number: location.state.appointment.token_number || "",
           status: location.state.appointment.status || "scheduled",
           registered_date: location.state.appointment.registered_date || "",
           created_by: JSON.parse(receptionist)._id,
@@ -32,7 +32,7 @@ const AppointmentForm = () => {
           doctor_id: "",
           appointment_date: "",
           time_slot: "",
-          token_number: "",
+        //  token_number: "",
           status: "scheduled",
           registered_date: "",
           created_by: JSON.parse(receptionist)._id,
@@ -64,7 +64,8 @@ const AppointmentForm = () => {
         //add
         axiosInstance.post('/appointments/addAppointment', appointment)
           .then(res => {
-            toast.success(res.data.message);
+           // toast.success(res.data.message);
+           toast.success(`Appointment booked! Token: ${res.data.token_number}`);
             navigate('/reception-dashboard');
           })
           .catch(error => {
@@ -185,7 +186,7 @@ const AppointmentForm = () => {
                     </Grid>
 
                     {/* Token Number */}
-                    <Grid item xs={12} mt={2}>
+                   {/* <Grid item xs={12} mt={2}>
                       <TextField
                         fullWidth
                         variant="standard"
@@ -195,7 +196,7 @@ const AppointmentForm = () => {
                         value={appointment.token_number}
                         onChange={inputHandler}
                       />
-                    </Grid>
+                    </Grid> */}
 
                     {/* Registered Date */}
                     <Grid item xs={12} mt={2}>
