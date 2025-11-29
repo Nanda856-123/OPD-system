@@ -12,6 +12,7 @@ const AppointmentSchema=mongoose.Schema({
                 },   
         time_slot: String,
         token_number: Number,       
+        notes:String,
         status: String,
         created_by: mongoose.Schema.Types.ObjectId, 
        // createdAt: Date        

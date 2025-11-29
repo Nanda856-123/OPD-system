@@ -11,7 +11,7 @@ const patientRoutes=require('./routes/patientRoutes')
 const doctorRoutes=require('./routes/doctorRoutes')
 const appointmentRoutes=require('./routes/appointmentRoutes')
 require('./model/Department')
-
+require('./model/Appointment');
 
 app.use(cors({
   origin: '*',
