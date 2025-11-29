@@ -1,0 +1,198 @@
+
+
+:root{ --sidebar-width:260px; --accent-1:#5e72e4; --accent-2:#825ee4; --panel-bg:#f2f2f2; }
+
+/* Layout Wrapper */
+.main-container { min-height: 100vh; background: var(--panel-bg); overflow: hidden; }
+
+/* Sidebar */
+.sidebar {
+  width: var(--sidebar-width);
+  padding: 20px;
+  height: 100vh;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  transform: translateX(0%);
+  background: #fff;
+  border-right: 1px solid rgba(0,0,0,0.04);
+  box-shadow: 1px 0 6px rgba(0,0,0,0.03);
+}
+
+.main{ padding: 0 0 0 var(--sidebar-width); }
+.main-content{ display: block; padding: 0 30px; }
+.sidebar ul{ padding: 0; margin: 0; }
+
+.sidebar h3 { margin-bottom: 15px; }
+.sidebar ul li { margin-bottom: 10px; cursor: pointer; color: rgba(0, 0, 0, .65); }
+.sidebar ul li a{ display: block; color: rgba(0, 0, 0, .65); border: none; padding: 10px; text-decoration: none; border-radius: 6px; }
+.sidebar ul li a:hover{ background-color: var(--accent-1); color: #fff !important; }
+.sidebar ul li a.active{ color: #fff; background: linear-gradient(90deg,var(--accent-1),var(--accent-2)); }
+
+.top-bar { display: none; }
+
+.user-details-card{ max-width: 500px !important; margin: 0 auto; padding: 20px; background: #fff; border-radius: 12px; margin-bottom: 20px; }
+.user-avatar{ border-radius: 50%; width: 200px; height: 200px; display: flex; justify-content: center; align-items: center; text-align: center; margin: 15px auto; color: #fff; font-size: 45px; border: 1px solid rgba(0,0,0,0.06); }
+.user_personal-info ul li, .user_history-info ul li{ display: flex; justify-content: space-between; }
+
+@media (max-width: 768px) {
+  .top-bar { display: flex; width: 100%; align-items: center; background: white; padding: 10px; border-bottom: 1px solid #ddd; }
+  .menu-btn { font-size: 24px; margin-right: 20px; background: none; border: none; cursor: pointer; }
+  .sidebar { display: none; position: absolute; height: 100%; z-index: 10; background: white; }
+  .sidebar.show { display: block; }
+  .main{ padding: 0; }
+}
+
+/* Content */
+.content { flex: 1; padding: 20px; overflow-y: auto; }
+
+/* Cards Grid */
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+
+/* Card Design */
+.card { background: white; padding: 15px; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+.card h3 { margin-bottom: 10px; }
+
+
+.form input, .form select, .form textarea { width: 100%; padding: 8px; margin-bottom: 8px; border: 1px solid #ccc; border-radius: 4px; }
+
+.today-appointments-wrapper {
+  max-width: 1000px;   
+  margin: 0 auto;
+}
+
+.today-appointments-table {
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  width: 100% !important;      
+}
+
+
+.today-appointments-table {
+  overflow-x: hidden;          
+}
+
+.today-appointments-table .MuiTable-root {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.prim-bg .MuiTableCell-head {
+  background: #5a67e8;
+  color: #fff;
+  font-weight: 600;
+  border-bottom: none;
+}
+
+.today-appointments-table .MuiTableCell-body {
+  border-bottom: 1px solid #eee;
+  padding: 16px 24px;
+  font-weight: normal;
+  color: rgba(0, 0, 0, 0.55);
+}
+
+.today-appointments-table .MuiTableRow-root:last-child
+  .MuiTableCell-body {
+  border-bottom: none;
+}
+
+.today-appointments-table .table-action-btn.MuiButton-root {
+  background-color: #5a67e8;
+  color: #fff;
+  border-radius: 4px;
+  font-weight: 600;
+  box-shadow: none;
+  padding: 4px 18px;
+}
+
+.today-appointments-table .table-action-btn.MuiButton-root:hover {
+  background-color: #7231dc;
+  box-shadow: 0 2px 4px rgba(114, 60, 213, 0.15);
+}
+
+
+.schedule-btn { background: blue; color: white; border: none; padding: 6px 12px; cursor: pointer; border-radius: 4px; }
+
+.dashboard-title{
+  min-height: 250px;
+  padding: 30px;
+  color: #fff;
+  background: linear-gradient(87deg, var(--accent-1) 0, var(--accent-2) 100%) !important;
+  border-radius: 8px;
+}
+
+.icon-shape{ display: inline-flex; padding: 14px; border-radius: 50%; }
+
+.register-page .patient-form, .appointment-form { max-width: 900px; margin: 0 auto; position: relative; bottom: 140px; }
+
+@media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+@media(max-width:991px){ .display-lg{ display: none; } .display-mob{ display: block; } }
+
+
+.main-header {
+  border-radius: 8px;
+  padding: 22px;
+  color: #fff;
+  background: linear-gradient(90deg,var(--accent-1),var(--accent-2));
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.stat-card {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  background: #fff;
+  color: #111827;
+  border-radius: 8px;
+  box-shadow: 0 6px 20px rgba(59,64,93,0.12);
+}
+
+.patients-table thead th { background: var(--accent-1); color: #fff; text-transform: uppercase; font-weight:600; font-size: 13px; }
+.patients-table tbody td { background: #fff; color: rgba(0,0,0,0.65); }
+
+
+.text-muted { color: rgba(0,0,0,0.45); }
+.center { text-align: center; }
+
+.rfbtn{
+  color: #5a67e8 !important;
+  border-color: #5a67e8 !important;
+}
+
+.doctor-stats-card {
+  height: 190px; 
+  display: flex;
+  align-items: center;
+}
+
+.doctor-stats-card .card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+}
+
+/* Optional: Improve icon alignment */
+.doctor-stats-card .icon-shape {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+}
+
+
+/* small screens adjustments */
+@media (max-width: 600px) {
+  .sidebar { width: 200px; }
+  .main { padding: 0 0 0 200px; }
+  .stat-card { min-width: 160px; }
+}
