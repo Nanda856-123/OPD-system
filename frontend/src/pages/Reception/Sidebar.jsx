@@ -43,11 +43,6 @@ const Sidebar = ({ sidebarOpen }) => {
             <FaUsers/><span className='m-3'>Patients</span>
           </NavLink>
         </li>
-        <li>
-          <NavLink to="/" className={({ isActive }) => (isActive ? 'active prim-bg' : '')}>
-            <MdOutlineGeneratingTokens/><span className='m-3'>Tokens</span>
-          </NavLink>
-        </li>
         <li className='flex-grow-1 d-flex align-items-end w-100'>
           <NavLink onClick={onLogoutHandler} to="/" className={`w-100 ${({ isActive }) => (isActive ? 'active prim-bg' : '')}`}>
             <IoLogOutOutline/><span className='m-3'>Logout</span>

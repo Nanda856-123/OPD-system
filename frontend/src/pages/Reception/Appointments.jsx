@@ -50,10 +50,14 @@ const [currAppointment, setCurrAppointment] = useState(null);
   };
 
   const confirmDeleteHandler = () => {
-    axiosInstance.delete(`/appointments/delete/${currAppointment._id}`)
+    axiosInstance.put(`/appointments/cancel/${currAppointment._id}`)
       .then((res) => {
         toast.success(res.data.message);
-        setAppointments(appointments.filter(a => a._id !== currAppointment._id))
+        setAppointments(appointments.map(appointment =>
+        appointment._id === currAppointment._id
+          ? { ...appointment, status: "canceled" }
+          : appointment
+      ));
         setIsDeletePopupOpen(false);
       })
       .catch((error) => {
@@ -69,7 +73,9 @@ const [currAppointment, setCurrAppointment] = useState(null);
     setIsDeletePopupOpen(false);
     setCurrAppointment(null);
   };
-
+ const generateBillHandler=(currAppointment)=>{
+  navigate(`/generate-bill/${currAppointment._id}`,{state:{currAppointment}})
+ }
 
   return (
     <div>
@@ -86,24 +92,26 @@ const [currAppointment, setCurrAppointment] = useState(null);
                 All Appointments
               </h4>
             </div>
-            <div className='col-xl-3 col-lg-6'>
-                <div className="card  mt-3 card-stats mb-4 mb-xl-0">
-              <div className="card-body">
-                <div className="row">
-                  <div className="col">
-                    <h5 className="card-title text-uppercase text-muted">
-                      Appointments
-                    </h5>
-                    <span className="h2 font-weight-bold">{appointments?.length}</span>
-                  </div>
-                  <div className="col-auto">
-                    <div className="icon-shape bg-danger text-white shadow">
-                      <SlCalender />
+            <div className="col-xl-3 col-lg-6">
+              <div className="card  mt-3 card-stats mb-4 mb-xl-0">
+                <div className="card-body">
+                  <div className="row">
+                    <div className="col">
+                      <h5 className="card-title text-uppercase text-muted">
+                        Appointments
+                      </h5>
+                      <span className="h2 font-weight-bold">
+                        {appointments?.length}
+                      </span>
+                    </div>
+                    <div className="col-auto">
+                      <div className="icon-shape bg-danger text-white shadow">
+                        <SlCalender />
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
             </div>
           </div>
           <div className="container">
@@ -111,19 +119,24 @@ const [currAppointment, setCurrAppointment] = useState(null);
               <div className="w-100">
                 <div className="m-4">
                   <div className="mb-3 mt-5">
-                  {/*   <Link to="/appointment-form">
+                    {/*   <Link to="/appointment-form">
                       <Button>
                         <AddIcon />
                       </Button>
                     </Link> */}
 
                     <Link to="/register-patient-appointment">
-                    <Button><AddIcon /></Button>
+                      <Button>
+                        <AddIcon />
+                      </Button>
                     </Link>
                   </div>
                   <TableContainer component={Paper}>
-                    <Table sx={{ minWidth: 650 }} aria-label="appointment table">
-                      <TableHead className='prim-bg'>
+                    <Table
+                      sx={{ minWidth: 650 }}
+                      aria-label="appointment table"
+                    >
+                      <TableHead className="prim-bg">
                         <TableRow>
                           <TableCell>SL No</TableCell>
                           <TableCell>OPD ID</TableCell>
@@ -144,7 +157,9 @@ const [currAppointment, setCurrAppointment] = useState(null);
                               <TableCell component="th" scope="row">
                                 {index + 1}
                               </TableCell>
-                              <TableCell>{appointment.patient_id?.opd_id}</TableCell>
+                              <TableCell>
+                                {appointment.patient_id?.opd_id}
+                              </TableCell>
                               <TableCell>
                                 {appointment.patient_id?.name}
                               </TableCell>
@@ -157,23 +172,45 @@ const [currAppointment, setCurrAppointment] = useState(null);
                               <TableCell>{appointment.time_slot}</TableCell>
                               <TableCell>{appointment.token_number}</TableCell>
                               <TableCell>{appointment.createdAt}</TableCell>
-                              <TableCell>{appointment.status}</TableCell>
+                              <TableCell><span className={appointment.status==='canceled' ? 'status-cancel' : ''}>{appointment.status}</span></TableCell>
                               <TableCell>
-                                <button
-                                  onClick={() =>
-                                    editAppointmentHandler(appointment)
-                                  }
-                                  className="btn-edit action-btn mb-2"
-                                  variant="text"
-                                >
-                                  <Link to=""><FaEdit/></Link>
-                                </button>
+                                {appointment.status === "scheduled" && (
+                                  <>
+                                    <button
+                                      onClick={() =>
+                                        editAppointmentHandler(appointment)
+                                      }
+                                      className="btn-edit action-btn mb-2"
+                                      variant="text"
+                                    >
+                                      <Link to="">
+                                        <FaEdit />
+                                      </Link>
+                                    </button>
+                                    <button
+                                      onClick={() =>
+                                        deleteAppointmentHandler(appointment)
+                                      }
+                                      className="btn-dlt action-btn mb-2"
+                                    >
+                                      <MdDeleteOutline />
+                                    </button>
+                                  </>
+                                )}
+                                {appointment.status === "completed" &&
+                                  !appointment.billGenerated && (
+                                    <Button
+                                      btnHandler={() =>
+                                        generateBillHandler(appointment)
+                                      }
+                                    >
+                                      Generate Bill
+                                    </Button>
+                                  )}
 
-                                <button
-                                  onClick={() => deleteAppointmentHandler(appointment)}
-                                  className="btn-dlt action-btn mb-2">
-                                  <MdDeleteOutline />
-                                </button>
+                                {appointment.billGenerated && (
+                                  <Link to={`/view-bill/${appointment.billId}`}><Button>View Bill</Button></Link>
+                                )}
                               </TableCell>
                             </TableRow>
                           ))

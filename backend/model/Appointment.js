@@ -14,6 +14,8 @@ const AppointmentSchema=mongoose.Schema({
         token_number: Number,       
         notes:String,
         status: String,
+        billGenerated: { type: Boolean, default: false },
+        billId: { type: mongoose.Schema.Types.ObjectId, ref: "billing", default: null },
         created_by: mongoose.Schema.Types.ObjectId, 
        // createdAt: Date        
 }, { timestamps: true })
