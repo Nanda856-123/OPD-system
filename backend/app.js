@@ -5,6 +5,7 @@ require('./db/connection')
 const cors= require('cors')
 const adminRoutes = require('./routes/adminRoutes');
 const authRoutes = require('./routes/authRoutes');
+const billRoutes = require('./routes/billRoutes');
 
 const PORT=process.env.PORT || 3000
 const patientRoutes=require('./routes/patientRoutes')
@@ -25,6 +26,7 @@ app.use('/admin', adminRoutes);
 app.use('/patient',patientRoutes)
 app.use('/doctor',doctorRoutes)
 app.use('/appointments',appointmentRoutes)
+app.use('/billing',billRoutes)
 
 // Health check
 app.get('/health', (req, res) => {

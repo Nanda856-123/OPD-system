@@ -21,9 +21,21 @@ router.get('/',verifyToken,async(req,res)=>{
         res.status(404).send('Error fetching appointments');
     }
 })
+router.get("/:id", async (req, res) => {
+  try {
+    const appointment = await AppointmentModel.findById(req.params.id)
+      .populate("doctor_id", "name")
+      .populate("patient_id", "name opd_id");
 
+    if (!appointment) {
+      return res.status(404).json({ message: "Appointment not found" });
+    }
 
-
+    res.json(appointment);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 // Auto reset tokens every new day (doctor-wise & date-wise)
 router.post('/addAppointment', async (req, res) => {
   try {
@@ -66,22 +78,32 @@ router.post('/addAppointment', async (req, res) => {
     res.status(500).send({ message: "Error in booking appointment" });
   }
 });
-
-
-
-router.post('/addAppointment',verifyToken,async(req,res)=>{
-    try{
-        const appointment=req.body;
-        await AppointmentModel.create(appointment);
-        res.status(200).send({message:'Appointment booked successfully'});
-    }
-    catch(error){
-        console.error('Error booking appointment:', error);
-        res.status(404).send('Error in booking appointment');
-    }
-})
-
 router.put('/edit/:id', verifyToken, async (req, res) => {
+  try {
+    const updated = await AppointmentModel.findByIdAndUpdate(req.params.id,req.body);
+    if (!updated) {
+      return res.status(404).send({ message: 'Appointment not found' });
+    }
+    res.status(200).send({ message: 'Appointment updated successfully', appointment: updated });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ message: 'Error updating appointment' });
+  }
+});
+
+// router.post('/addAppointment',verifyToken,async(req,res)=>{
+//     try{
+//         const appointment=req.body;
+//         await AppointmentModel.create(appointment);
+//         res.status(200).send({message:'Appointment booked successfully'});
+//     }
+//     catch(error){
+//         console.error('Error booking appointment:', error);
+//         res.status(404).send('Error in booking appointment');
+//     }
+// })
+
+router.put('/complete/:id', verifyToken, async (req, res) => {
   try {
     const id = req.params.id;
 
@@ -105,7 +127,18 @@ router.put('/edit/:id', verifyToken, async (req, res) => {
     res.status(500).send('Error in updating appointment');
   }
 });
+router.put('/cancel/:id',verifyToken, async (req, res) => {
+  try{
+    const id=req.params.id
+    const updated=await AppointmentModel.findByIdAndUpdate(id,  { status: "canceled" },{ new: true })
+     if (!updated) {
+      return res.status(404).send({ message: "Appointment not found" });
+    }
+    res.status(200).send({ message: "Appointment canceled successfully", appointment: updated });
+  }catch(error){
 
+  }
+})
 router.get("/doctor", verifyToken, async (req, res) => {
   try {
     const doctor = await DoctorModel.findOne({ email: req.user.email }); //req.user is available via verifyToken

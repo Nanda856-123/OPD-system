@@ -114,6 +114,7 @@ const AppointmentForm = () => {
                           value={appointment.patient_id}
                           onChange={inputHandler}
                           label="Select Patient"
+                          disabled
                         >
                           <MenuItem value="">Select Patient</MenuItem>
                           {patients.length === 0 ? (

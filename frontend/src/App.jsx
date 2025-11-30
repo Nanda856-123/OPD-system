@@ -1,7 +1,8 @@
 import './App.css'
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
 import {Login, AdminDashboard, ReceptionDashboard, DoctorDashboard,Patients,RegisterPatient,
-  AppointmentForm,Appointments,PatientDetail,Departments,Doctors,Schedules, Consultation, PatientHistory
+  AppointmentForm,Appointments,PatientDetail,Departments,Doctors,Schedules, Consultation, PatientHistory,GenerateBill,
+  ViewBill
 } from './pages'
 import DoctorLayout from './pages/Doctor/DoctorLayout'   // new layout
 import { Toaster } from 'react-hot-toast'
@@ -28,8 +29,10 @@ function App() {
           <Route path='/appointments' element={<Appointments/>}/>
           <Route path='/appointment-form' element={<AppointmentForm/>}/>
           <Route path='/patients/:id' element={<PatientDetail/>}/>
-          <Route path='/register-patient-appointment' element={<CombinedForm/>}/>
           <Route path='/combined-summary' element={<CombinedSummary/>}/>
+          <Route path='/register-patient-appointment' element={<CombinedForm/>}/>
+          <Route path='/generate-bill/:appointmentId' element={<GenerateBill/>}/>
+          <Route path='/view-bill/:id' element={<ViewBill/>}/>
 
            {/* Backwards-compatible route that redirects to the new doctor layout */}
             <Route path='/doctor-dashboard' element={<Navigate to="/doctor/dashboard" replace />} />
