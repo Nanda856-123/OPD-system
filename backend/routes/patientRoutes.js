@@ -28,7 +28,7 @@ async function generateOPDId() {
     registered_date: { $gte: start, $lte: end }
   });
 
-  const opdId = `${datePrefix}${countToday}`;
+  const opdId = `OPD${datePrefix}${countToday + 1}`;
 
   return opdId;
 }
@@ -103,6 +103,15 @@ router.post('/registerPatientWithAppointment', verifyToken, async (req, res) => 
 
     //Prepare Appointment
     appointmentData.patient_id = newPatient._id;
+    // initially it contains
+    //   {
+    // "doctor_id": "doc123",
+    // "appointment_date": "2025-02-11",
+    // "time_slot": "10:00",
+    // "status": "scheduled",
+    // "created_by": "receptionist123"
+    // }
+    //now backend add patient id to appointmentData
 
     const doctor_id = appointmentData.doctor_id;
     const appointment_date_raw = appointmentData.appointment_date;
@@ -119,7 +128,7 @@ router.post('/registerPatientWithAppointment', verifyToken, async (req, res) => 
 
     const count = await AppointmentModel.countDocuments({
       doctor_id,
-      appointment_date: { $gte: dateStart, $lte: dateEnd }
+      appointment_date: { $gte: dateStart, $lte: dateEnd } //how many patients registered today
     });
 
     appointmentData.token_number = count + 1;

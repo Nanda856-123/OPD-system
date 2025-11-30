@@ -47,6 +47,11 @@ background-color: #6651c926 !important;
 .bg-blue{
     background-color: #e91e63 !important;
 }
+.status-cancel{
+        background: #ffbcbc;
+    padding: 6px 10px;
+    border-radius: 10px;
+}
 .popup{
   position: fixed;
     width: 100%;
@@ -59,5 +64,16 @@ background-color: #6651c926 !important;
     justify-content: center;
     align-items: center;
 }
-
+@media print {
+  .sidebar, .navbar, .btn {
+    display: none !important;
+  }
+  .main-container,
+  .main,
+  .container {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+  }
+}
 

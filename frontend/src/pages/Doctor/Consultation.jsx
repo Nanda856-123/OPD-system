@@ -92,7 +92,7 @@ export default function Consultation() {
     try {
       const payload = { notes: note };
       const res = await axiosInstance.put(
-        `/appointments/edit/${appointmentId}`,
+        `/appointments/complete/${appointmentId}`,
         payload
       );
 
