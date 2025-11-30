@@ -175,11 +175,15 @@
 .doctor-stats-card .card-body {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start; /* 🔥 align everything to the top */
   width: 100%;
 }
 
-/* Optional: Improve icon alignment */
+.doctor-stats-card .card-body .row {
+  align-items: center !important;
+}
+
+
 .doctor-stats-card .icon-shape {
   width: 42px;
   height: 42px;
@@ -187,7 +191,22 @@
   align-items: center;
   justify-content: center;
   border-radius: 8px;
+
+  position: static !important;  
+  margin: 0 !important;          
 }
+
+.table-action-btn {
+  width: 120px !important;
+  height: 36px !important;
+  min-width: 120px !important;
+  padding: 4px 8px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  white-space: nowrap; 
+}
+
 
 
 /* small screens adjustments */

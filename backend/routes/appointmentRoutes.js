@@ -21,6 +21,23 @@ router.get('/',verifyToken,async(req,res)=>{
         res.status(404).send('Error fetching appointments');
     }
 })
+
+router.get("/doctor", verifyToken, async (req, res) => {
+  try {
+    const doctor = await DoctorModel.findOne({ email: req.user.email }); //req.user is available via verifyToken
+    if (!doctor) {
+      return res.status(404).send({ message: "doctor not found" });
+    }
+    const appointment = await AppointmentModel.find({ doctor_id: doctor._id })
+      .populate("doctor_id", "name")
+      .populate("patient_id", "name");
+    res.status(200).send(appointment);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ message: "Error fetching doctor's appointments" });
+  }
+});
+
 router.get("/:id", async (req, res) => {
   try {
     const appointment = await AppointmentModel.findById(req.params.id)
@@ -139,21 +156,6 @@ router.put('/cancel/:id',verifyToken, async (req, res) => {
 
   }
 })
-router.get("/doctor", verifyToken, async (req, res) => {
-  try {
-    const doctor = await DoctorModel.findOne({ email: req.user.email }); //req.user is available via verifyToken
-    if (!doctor) {
-      return res.status(404).send({ message: "doctor not found" });
-    }
-    const appointment = await AppointmentModel.find({ doctor_id: doctor._id })
-      .populate("doctor_id", "name")
-      .populate("patient_id", "name");
-    res.status(200).send(appointment);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send({ message: "Error fetching doctor's appointments" });
-  }
-});
 
 router.get('/history/:patientId', verifyToken, async (req, res) => {
   const patientId = req.params.patientId;

@@ -28,6 +28,9 @@ export default function DoctorDashboard() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  const normalizeStatus = (s) =>
+    String(s || "").trim().toLowerCase(); // 🔹 Added for button condition
+
   useEffect(() => {
     setLoading(true);
     axiosInstance
@@ -44,107 +47,109 @@ export default function DoctorDashboard() {
   return (
     <Box sx={{}}>
       <div className="dashboard-title">
-  <div className="text-lg-end">
-    <CgProfile className="fs-1 m-2" />
-    <span>{user?.name}</span>
-  </div>
+        <div className="text-lg-end">
+          <CgProfile className="fs-1 m-2" />
+          <span>{user?.name}</span>
+        </div>
 
-  <div className="d-flex align-items-center">
-    <div className="icon-shape text-white shadow">
-      <SlCalender />
-    </div>
-    <h4 style={{ fontSize: "30px", paddingLeft: "20px" }}>
-      Today&apos;s Appointments
-    </h4>
-  </div>
+        <div className="d-flex align-items-center">
+          <div className="icon-shape text-white shadow">
+            <SlCalender />
+          </div>
+          <h4 style={{ fontSize: "30px", paddingLeft: "20px" }}>
+            Today&apos;s Appointments
+          </h4>
+        </div>
 
-  <div className="row mt-3">
-    <div className="col-xl-4 col-lg-6 mt-3">
-      <div className="card card-stats doctor-stats-card mb-4 mb-xl-0">
-        <div className="card-body">
-          <div className="row">
-            <div className="col">
-              <h5 className="card-title text-uppercase text-muted">
-                Appointments
-              </h5>
-              <span className="h2 font-weight-bold">
-                {appointments.length}
-              </span>
+        <div className="row mt-3">
+          <div className="col-xl-4 col-lg-6 mt-3">
+            <div className="card card-stats doctor-stats-card mb-4 mb-xl-0">
+              <div className="card-body">
+                <div className="row align-items-center">
+                  <div className="col">
+                    <h5 className="card-title text-uppercase text-muted">
+                      Appointments
+                    </h5>
+                    <span className="h2 font-weight-bold">
+                      {appointments.length}
+                    </span>
+                  </div>
+                  <div className="col-auto">
+                    <div className="icon-shape bg-danger text-white shadow">
+                      <SlCalender />
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="col-auto">
-              <div className="icon-shape bg-danger text-white shadow">
-                <SlCalender />
+          </div>
+
+          <div className="col-xl-4 col-lg-6 mt-3">
+            <div className="card card-stats doctor-stats-card mb-4 mb-xl-0">
+              <div className="card-body">
+                <div className="row">
+                  <div className="col">
+                    <h5 className="card-title text-uppercase text-muted">
+                      Scheduled / Pending
+                    </h5>
+                    <span className="h2 font-weight-bold">
+                      {appointments.filter((a) =>
+                        ["pending", "scheduled", "approved"].includes(
+                          a.status?.toLowerCase()
+                        )
+                      ).length}
+                    </span>
+                  </div>
+                  <div className="col-auto">
+                    <div className="icon-shape bg-info text-white shadow">
+                      <SlCalender />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="col-xl-4 col-lg-6 mt-3">
+            <div className="card card-stats doctor-stats-card mb-4 mb-xl-0">
+              <div className="card-body">
+                <div className="row">
+                  <div className="col">
+                    <h5 className="card-title text-uppercase text-muted">
+                      Completed
+                    </h5>
+                    <span className="h2 font-weight-bold">
+                      {appointments.filter((a) =>
+                        ["completed", "consulted"].includes(
+                          a.status?.toLowerCase()
+                        )
+                      ).length}
+                    </span>
+                  </div>
+                  <div className="col-auto">
+                    <div className="icon-shape bg-success text-white shadow">
+                      <FaStethoscope />
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-
-    <div className="col-xl-4 col-lg-6 mt-3">
-      <div className="card card-stats doctor-stats-card mb-4 mb-xl-0">
-        <div className="card-body">
-          <div className="row">
-            <div className="col">
-              <h5 className="card-title text-uppercase text-muted">
-                Scheduled / Pending
-              </h5>
-              <span className="h2 font-weight-bold">
-                {appointments.filter(a =>
-                  ["pending", "scheduled", "approved"].includes(a.status?.toLowerCase())
-                ).length}
-              </span>
-            </div>
-            <div className="col-auto">
-              <div className="icon-shape bg-info text-white shadow">
-                <SlCalender />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div className="col-xl-4 col-lg-6 mt-3">
-      <div className="card card-stats doctor-stats-card mb-4 mb-xl-0">
-        <div className="card-body">
-          <div className="row">
-            <div className="col">
-              <h5 className="card-title text-uppercase text-muted">
-                Completed
-              </h5>
-              <span className="h2 font-weight-bold">
-                {appointments.filter(a =>
-                  ["completed", "consulted"].includes(a.status?.toLowerCase())
-                ).length}
-              </span>
-            </div>
-            <div className="col-auto">
-              <div className="icon-shape bg-success text-white shadow">
-                <FaStethoscope/>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 
       <Stack
         direction="row"
         justifyContent="space-between"
         alignItems="center"
         mb={2}
-      >
-
-      </Stack>
+      ></Stack>
 
       <div className="today-appointments-wrapper">
         <TableContainer
           component={Paper}
           className="table-container today-appointments-table"
-          sx={{ maxHeight: "60vh", width: "100%" }} // ✅ full width
+          sx={{ maxHeight: "60vh", width: "100%" }}
         >
           {loading ? (
             <Box sx={{ py: 6, display: "flex", justifyContent: "center" }}>
@@ -168,51 +173,62 @@ export default function DoctorDashboard() {
                     </TableCell>
                   </TableRow>
                 ) : (
-                  appointments.map((appointment) => (
-                    <TableRow key={appointment._id} hover>
-                      <TableCell sx={{ fontWeight: 600 }}>
-                        {appointment?.patient_id?.name ?? "—"}
-                      </TableCell>
-                      <TableCell>{appointment?.time_slot || "—"}</TableCell>
-                      <TableCell>
-                        {String(appointment?.status ?? "—")}
-                      </TableCell>
-                      <TableCell align="center">
-                        <Stack
-                          direction="row"
-                          spacing={1}
-                          justifyContent="center"
-                        >
-                          <Button
-                            size="small"
-                            variant="contained"
-                            className="table-action-btn"
-                            onClick={() => {
-                              const pid =
-                                appointment.patient_id?._id ||
-                                appointment.patient_id;
-                              if (pid)
-                                navigate(`/doctor/patient-history?id=${pid}`);
-                            }}
+                  appointments.map((appointment) => {
+                    const s = normalizeStatus(appointment.status);
+                    const isCompleted =
+                      s === "completed" || s === "consulted";
+
+                    return (
+                      <TableRow key={appointment._id} hover>
+                        <TableCell sx={{ fontWeight: 600 }}>
+                          {appointment?.patient_id?.name ?? "—"}
+                        </TableCell>
+                        <TableCell>
+                          {appointment?.time_slot || "—"}
+                        </TableCell>
+                        <TableCell>
+                          {String(appointment?.status ?? "—")}
+                        </TableCell>
+                        <TableCell align="center">
+                          <Stack
+                            direction="row"
+                            spacing={1}
+                            justifyContent="center"
                           >
-                            HISTORY
-                          </Button>
-                          <Button
-                            size="small"
-                            variant="contained"
-                            className="table-action-btn"
-                            onClick={() =>
-                              navigate(
-                                `/doctor/consultation/${appointment._id}`
-                              )
-                            }
-                          >
-                            CONSULT
-                          </Button>
-                        </Stack>
-                      </TableCell>
-                    </TableRow>
-                  ))
+                            <Button
+                              size="small"
+                              variant="contained"
+                              className="table-action-btn"
+                              onClick={() => {
+                                const pid =
+                                  appointment.patient_id?._id ||
+                                  appointment.patient_id;
+                                if (pid)
+                                  navigate(
+                                    `/doctor/patient-history?id=${pid}`
+                                  );
+                              }}
+                            >
+                              HISTORY
+                            </Button>
+
+                            <Button
+                              size="small"
+                              variant="contained"
+                              className="table-action-btn"
+                              onClick={() =>
+                                navigate(
+                                  `/doctor/consultation/${appointment._id}`
+                                )
+                              }
+                            >
+                              {isCompleted ? "RE-CONSULT" : "CONSULT"}
+                            </Button>
+                          </Stack>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })
                 )}
               </TableBody>
             </Table>
