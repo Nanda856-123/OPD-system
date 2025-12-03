@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../../axiosinterceptor";
 import toast from "react-hot-toast";
 import "./Doctors.css";
 import Sidebar from "./Sidebar";
@@ -48,7 +48,7 @@ export default function Doctors() {
 
   const loadDoctors = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/admin/doctors", {
+      const res = await axiosInstance.get("/admin/doctors", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setDoctors(res.data);
@@ -59,7 +59,7 @@ export default function Doctors() {
 
   const loadDepartments = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/admin/departments", {
+      const res = await axiosInstance.get("/admin/departments", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setDepartments(res.data);
@@ -88,14 +88,14 @@ export default function Doctors() {
   const saveDoctor = async () => {
     try {
       if (editId) {
-        await axios.put(
-          `http://localhost:3000/admin/doctors/${editId}`,
+        await axiosInstance.put(
+          `/admin/doctors/${editId}`,
           form,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         toast.success("Doctor updated");
       } else {
-        await axios.post("http://localhost:3000/admin/doctors", form, {
+        await axiosInstance.post("/admin/doctors", form, {
           headers: { Authorization: `Bearer ${token}` },
         });
         toast.success("Doctor added");
@@ -111,7 +111,7 @@ export default function Doctors() {
     if (!window.confirm("Are you sure?")) return;
 
     try {
-      await axios.delete(`http://localhost:3000/admin/doctors/${id}`, {
+      await axiosInstance.delete(`/admin/doctors/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       toast.success("Doctor deleted");
@@ -312,4 +312,3 @@ export default function Doctors() {
     </div>
   );
 }
-
