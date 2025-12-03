@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "../../axiosinterceptor";
 import { MdHistory } from "react-icons/md";
 import { CgProfile } from "react-icons/cg";
 
-const ACCENT_1 = "#5e72e4";
-const ACCENT_2 = "#825ee4";
 const BG = "#f2f2f2";
 const MUTED = "rgba(0,0,0,0.55)";
 
@@ -16,49 +14,7 @@ const styles = {
     fontFamily: "Segoe UI, Roboto, Arial, sans-serif",
     color: "#111",
   },
-  hero: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: "28px 40px",
-    color: "#fff",
-    backgroundImage: `linear-gradient(90deg, rgba(94,114,228,0.92), rgba(130,94,228,0.92))`,
-    borderBottomLeftRadius: 8,
-    borderBottomRightRadius: 8,
-  },
-  heroTitle: { margin: 0, fontSize: 28, fontWeight: 700 },
-  heroSub: { marginTop: 6, opacity: 0.95 },
   container: { padding: "24px 40px" },
-  searchRow: {
-    display: "flex",
-    gap: 12,
-    alignItems: "center",
-    marginBottom: 20,
-  },
-  input: {
-    flex: 1,
-    padding: "10px 12px",
-    borderRadius: 8,
-    border: "1px solid rgba(0,0,0,0.09)",
-    fontSize: 14,
-    background: "#fff",
-  },
-  btnPrimary: {
-    background: `linear-gradient(90deg, ${ACCENT_1}, ${ACCENT_2})`,
-    color: "#fff",
-    border: "none",
-    padding: "10px 14px",
-    borderRadius: 8,
-    cursor: "pointer",
-    fontWeight: 600,
-  },
-  btnGhost: {
-    background: "transparent",
-    padding: "10px 14px",
-    borderRadius: 8,
-    border: "1px solid rgba(0,0,0,0.06)",
-    cursor: "pointer",
-  },
   card: {
     background: "#fff",
     borderRadius: 10,
@@ -68,6 +24,15 @@ const styles = {
   emptyState: { display: "flex", gap: 20, alignItems: "center", padding: 24 },
   emptyLeft: { flex: 1 },
   emptyActions: { marginTop: 14, display: "flex", gap: 10 },
+  btnPrimary: {
+    background: "linear-gradient(90deg, #5e72e4, #825ee4)",
+    color: "#fff",
+    border: "none",
+    padding: "10px 14px",
+    borderRadius: 8,
+    cursor: "pointer",
+    fontWeight: 600,
+  },
   resultsHeader: {
     display: "flex",
     justifyContent: "space-between",
@@ -101,18 +66,15 @@ export default function PatientHistory() {
     try {
       const qs = new URLSearchParams(location.search);
       return qs.get("id");
-    } catch (e) {
+    } catch {
       return null;
     }
   };
 
-  const initialId = getIdFromQuery();
-  const [patientId, setPatientId] = useState(initialId || "");
+  const patientId = getIdFromQuery(); 
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
-  console.log("Patient ID:", patientId);
 
   useEffect(() => {
     if (!patientId) {
@@ -120,18 +82,13 @@ export default function PatientHistory() {
       setError(null);
       return;
     }
-
-    const backendBase = "http://localhost:3000";
-    const url = `${backendBase}/appointments/history/${patientId}`;
+    const url = `/appointments/history/${patientId}`;
 
     setLoading(true);
     setError(null);
 
-    const token = localStorage.getItem("token");
-    const headers = token ? { Authorization: `Bearer ${token}` } : {};
-
-    axios
-      .get(url, { headers, timeout: 12000 })
+    axiosInstance
+      .get(url, { timeout: 12000 })
       .then((res) => {
         const payload = res.data;
         if (Array.isArray(payload)) setHistory(payload);
@@ -150,9 +107,7 @@ export default function PatientHistory() {
           err.code === "ERR_NETWORK" ||
           err.message === "Network Error"
         ) {
-          setError(
-            "Network error: cannot reach backend (is server running on port 3000?)."
-          );
+          setError("Network error: cannot reach backend.");
         } else {
           setError(err.message || "Unknown error");
         }
@@ -160,16 +115,7 @@ export default function PatientHistory() {
       .finally(() => setLoading(false));
   }, [patientId, location.search]);
 
-  const runSearch = () => {
-    if (!patientId) return;
-
-    navigate(`/doctor/patient-history?id=${patientId}`, { replace: true });
-  };
-
-  const clearSearch = () => {
-    setPatientId("");
-    navigate(`/doctor/patient-history`, { replace: true });
-  };
+  const patientName = history[0]?.patient_id?.name || "Patient";
 
   return (
     <div style={styles.page}>
@@ -210,35 +156,13 @@ export default function PatientHistory() {
       </div>
 
       <div style={styles.container}>
-        <div style={styles.searchRow}>
-          <input
-            style={styles.input}
-            placeholder="Enter or paste patient id"
-            value={patientId}
-            onChange={(e) => setPatientId(e.target.value.trim())}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") runSearch();
-            }}
-          />
-          <button
-            style={styles.btnPrimary}
-            onClick={runSearch}
-            disabled={!patientId}
-          >
-            Search
-          </button>
-          <button style={styles.btnGhost} onClick={clearSearch}>
-            Clear
-          </button>
-        </div>
-
         {!patientId ? (
           <div style={{ ...styles.card, ...styles.emptyState }}>
             <div style={styles.emptyLeft}>
               <h2 style={{ marginTop: 0 }}>No patient selected</h2>
               <p style={{ color: MUTED }}>
-                This page expects a patient id in the URL, or you can search
-                above.
+                This page is meant to be opened from the doctor dashboard using
+                the History button.
               </p>
 
               <div style={styles.emptyActions}>
@@ -262,8 +186,9 @@ export default function PatientHistory() {
                 <div style={{ fontSize: 13, color: MUTED }}>
                   Showing history for
                 </div>
+                {/* ✅ Only name, never ID */}
                 <div style={{ fontWeight: 700, marginTop: 6 }}>
-                  {history[0]?.patient_id?.name || patientId}
+                  {patientName}
                 </div>
               </div>
 
@@ -273,7 +198,9 @@ export default function PatientHistory() {
                   <div style={{ color: "#c53030" }}>Error: {error}</div>
                 )}
                 {!loading && !error && (
-                  <div style={{ color: MUTED }}>{history.length} record(s)</div>
+                  <div style={{ color: MUTED }}>
+                    {history.length} record(s)
+                  </div>
                 )}
               </div>
             </div>
@@ -289,8 +216,8 @@ export default function PatientHistory() {
               >
                 <div>No history entries found for this patient.</div>
                 <div style={{ marginTop: 8 }}>
-                  If you expect data, verify the patient id or check the
-                  appointments collection.
+                  If you expect data, verify the patient in the appointments
+                  list.
                 </div>
               </div>
             )}
@@ -307,7 +234,8 @@ export default function PatientHistory() {
                         {h.title || h.problem || `Visit ${i + 1}`}
                       </div>
                       <div style={styles.histNotes}>
-                        Notes:<br></br>
+                        Notes:
+                        <br />
                         {h.notes || h.description || h.reason || "-"}
                       </div>
                     </div>

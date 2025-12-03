@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../../axiosinterceptor";
 import toast from "react-hot-toast";
 import "./Departments.css";
 import Sidebar from "./Sidebar";
@@ -32,7 +32,7 @@ export default function Departments() {
   --------------------------------*/
   const loadDepartments = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/admin/departments", {
+      const res = await axiosInstance.get("/admin/departments", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setDepartments(res.data);
@@ -68,15 +68,15 @@ export default function Departments() {
   const saveDepartment = async () => {
     try {
       if (editId) {
-        await axios.put(
-          `http://localhost:3000/admin/departments/${editId}`,
+        await axiosInstance.put(
+          `/admin/departments/${editId}`,
           form,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         toast.success("Department updated");
       } else {
-        await axios.post(
-          "http://localhost:3000/admin/departments",
+        await axiosInstance.post(
+          "/admin/departments",
           form,
           { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -95,7 +95,7 @@ const deleteDepartmentHandler=(currDepartment)=>{
     setCurrDepartment(currDepartment);
 }
 const confirmDeleteHandler=()=>{
-    axios.delete(`http://localhost:3000/admin/departments/${currDepartment._id}`,).then((res)=>{
+    axiosInstance.delete(`/admin/departments/${currDepartment._id}`,).then((res)=>{
         toast.success(res.data.message);
         setDepartments(departments.filter((department)=>department._id!==currDepartment._id))
         setIsDeletePopupOpen(false);
@@ -272,5 +272,3 @@ const cancelDeleteHandler=()=>{
     </div>
   );
 }
-
-

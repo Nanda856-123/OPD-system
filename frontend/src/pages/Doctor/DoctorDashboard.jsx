@@ -29,7 +29,28 @@ export default function DoctorDashboard() {
   const navigate = useNavigate();
 
   const normalizeStatus = (s) =>
-    String(s || "").trim().toLowerCase(); // 🔹 Added for button condition
+    String(s || "").trim().toLowerCase();
+
+  const isToday = (dateValue) => {
+    if (!dateValue) return false;
+    const d = new Date(dateValue);
+    const today = new Date();
+
+    return (
+      d.getFullYear() === today.getFullYear() &&
+      d.getMonth() === today.getMonth() &&
+      d.getDate() === today.getDate()
+    );
+  };
+
+  // 🔹 Only today's appointments with status "scheduled" or "completed"
+  const todayAppointments = appointments.filter((a) => {
+    const status = normalizeStatus(a.status);
+    return (
+      isToday(a.appointment_date) &&
+      (status === "scheduled" || status === "completed")
+    );
+  });
 
   useEffect(() => {
     setLoading(true);
@@ -71,7 +92,7 @@ export default function DoctorDashboard() {
                       Appointments
                     </h5>
                     <span className="h2 font-weight-bold">
-                      {appointments.length}
+                      {todayAppointments.length}
                     </span>
                   </div>
                   <div className="col-auto">
@@ -90,13 +111,11 @@ export default function DoctorDashboard() {
                 <div className="row">
                   <div className="col">
                     <h5 className="card-title text-uppercase text-muted">
-                      Scheduled / Pending
+                      Scheduled
                     </h5>
                     <span className="h2 font-weight-bold">
-                      {appointments.filter((a) =>
-                        ["pending", "scheduled", "approved"].includes(
-                          a.status?.toLowerCase()
-                        )
+                      {todayAppointments.filter(
+                        (a) => normalizeStatus(a.status) === "scheduled"
                       ).length}
                     </span>
                   </div>
@@ -119,10 +138,8 @@ export default function DoctorDashboard() {
                       Completed
                     </h5>
                     <span className="h2 font-weight-bold">
-                      {appointments.filter((a) =>
-                        ["completed", "consulted"].includes(
-                          a.status?.toLowerCase()
-                        )
+                      {todayAppointments.filter(
+                        (a) => normalizeStatus(a.status) === "completed"
                       ).length}
                     </span>
                   </div>
@@ -166,17 +183,17 @@ export default function DoctorDashboard() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {appointments.length === 0 ? (
+                {todayAppointments.length === 0 ? (
                   <TableRow>
                     <TableCell colSpan={4} align="center" sx={{ py: 4 }}>
                       No appointments for today.
                     </TableCell>
                   </TableRow>
                 ) : (
-                  appointments.map((appointment) => {
+                  todayAppointments.map((appointment) => {
                     const s = normalizeStatus(appointment.status);
-                    const isCompleted =
-                      s === "completed" || s === "consulted";
+                    const isCompleted = s === "completed";
+                    const isCanceled = s === "canceled"; // still safe
 
                     return (
                       <TableRow key={appointment._id} hover>
@@ -199,7 +216,13 @@ export default function DoctorDashboard() {
                               size="small"
                               variant="contained"
                               className="table-action-btn"
+                              disabled={isCanceled}
+                              sx={{
+                                opacity: isCanceled ? 0.4 : 1,
+                                pointerEvents: isCanceled ? "none" : "auto",
+                              }}
                               onClick={() => {
+                                if (isCanceled) return;
                                 const pid =
                                   appointment.patient_id?._id ||
                                   appointment.patient_id;
@@ -216,11 +239,17 @@ export default function DoctorDashboard() {
                               size="small"
                               variant="contained"
                               className="table-action-btn"
-                              onClick={() =>
-                                navigate(
-                                  `/doctor/consultation/${appointment._id}`
-                                )
-                              }
+                              disabled={isCanceled}
+                              sx={{
+                                opacity: isCanceled ? 0.4 : 1,
+                                pointerEvents: isCanceled ? "none" : "auto",
+                              }}
+                              onClick={() => {
+                                if (!isCanceled)
+                                  navigate(
+                                    `/doctor/consultation/${appointment._id}`
+                                  );
+                              }}
                             >
                               {isCompleted ? "RE-CONSULT" : "CONSULT"}
                             </Button>

@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Typography, TextField, Box } from '@mui/material';
-import axios from 'axios';
+import axiosInstance from '../../axiosinterceptor';
 import Button from '../../components/Button';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
@@ -36,7 +36,7 @@ const Login = () => {
   });
 
   const onSubmit = (loginData) => {
-    axios.post('http://localhost:3000/auth/login', loginData)
+    axiosInstance.post('/auth/login', loginData)
       .then((res) => {
         toast.success(res.data.message);
         let token = res.data.token;

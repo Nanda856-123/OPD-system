@@ -3,8 +3,6 @@ import axiosInstance from "../../axiosinterceptor";
 import toast from "react-hot-toast";
 import { FaStethoscope } from "react-icons/fa";
 import { CgProfile } from "react-icons/cg";
-
-
 import {
   Box,
   Button,
@@ -30,6 +28,20 @@ export default function Consultation() {
 
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const normalizeStatus = (s) => String(s || "").trim().toLowerCase();
+
+  const isToday = (dateValue) => {
+    if (!dateValue) return false;
+    const d = new Date(dateValue);
+    const today = new Date();
+
+    return (
+      d.getFullYear() === today.getFullYear() &&
+      d.getMonth() === today.getMonth() &&
+      d.getDate() === today.getDate()
+    );
+  };
 
   const fetchAppointments = async () => {
     setLoading(true);
@@ -118,72 +130,75 @@ export default function Consultation() {
     toast.success("Refreshed");
   };
 
-  // 🔹 show only the appointment that was clicked "CONSULT" (if id exists)
+  // 🔹 Only today's appointments with status "scheduled" or "completed"
+  const todayAppointments = appointments.filter((a) => {
+    const status = normalizeStatus(a.status);
+    return (
+      isToday(a.appointment_date) &&
+      (status === "scheduled" || status === "completed")
+    );
+  });
+
+  // 🔹 Show today's only, and if :id exists, narrow down to that one
   const visibleAppointments = id
-    ? appointments.filter((a) => a._id === id)
-    : appointments;
+    ? todayAppointments.filter((a) => a._id === id)
+    : todayAppointments;
 
-     const normalizeStatus = (s) => String(s || "").trim().toLowerCase();
-
-  const scheduledCount = appointments.filter((a) => {
+  const scheduledCount = todayAppointments.filter((a) => {
     const st = normalizeStatus(a.status);
-    return st === "pending" || st === "scheduled" || st === "approved";
+    return st === "scheduled";
   }).length;
 
-  const completedCount = appointments.filter((a) => {
+  const completedCount = todayAppointments.filter((a) => {
     const st = normalizeStatus(a.status);
-    return st === "completed" || st === "consulted";
+    return st === "completed";
   }).length;
-
-
 
   return (
-    <Box sx={{ }}>
-      {/* ==== TITLE SECTION (3 cards) ==== */}
-<div className="dashboard-title">
-  <div className="text-lg-end">
-    <CgProfile className="fs-1 m-2" />
-    <span>{user?.name}</span>
-  </div>
+    <Box sx={{}}>
+      {/* ==== TITLE SECTION (card) ==== */}
+      <div className="dashboard-title">
+        <div className="text-lg-end">
+          <CgProfile className="fs-1 m-2" />
+          <span>{user?.name}</span>
+        </div>
 
-  <div className="d-flex align-items-center">
-    <div className="icon-shape text-white shadow">
-      <FaStethoscope />
-    </div>
-    <h4 style={{ fontSize: "30px", paddingLeft: "20px" }}>
-      Consultation
-    </h4>
-  </div>
+        <div className="d-flex align-items-center">
+          <div className="icon-shape text-white shadow">
+            <FaStethoscope />
+          </div>
+          <h4 style={{ fontSize: "30px", paddingLeft: "20px" }}>
+            Consultation
+          </h4>
+        </div>
 
-  <div className="row mt-3">
-
-    {/* 1️⃣ Total consultations */}
-    <div className="col-xl-4 col-lg-6">
-      <div className="card card-stats mb-4 mb-xl-0">
-        <div className="card-body">
-          <div className="row">
-            <div className="col">
-              <h5 className="card-title text-uppercase text-muted">
-                Consultations
-              </h5><br></br>
-              <span className="h2 font-weight-bold">
-                {appointments.length}
-              </span>
-            </div>
-            <div className="col-auto">
-              <div className="icon-shape bg-warning text-white shadow">
-                <FaStethoscope />
+        <div className="row mt-3">
+          {/* Total consultations (today, scheduled/completed) */}
+          <div className="col-xl-4 col-lg-6">
+            <div className="card card-stats mb-4 mb-xl-0">
+              <div className="card-body">
+                <div className="row">
+                  <div className="col">
+                    <h5 className="card-title text-uppercase text-muted">
+                      Consultations
+                    </h5>
+                    <br />
+                    <span className="h2 font-weight-bold">
+                      {todayAppointments.length}
+                    </span>
+                  </div>
+                  <div className="col-auto">
+                    <div className="icon-shape bg-warning text-white shadow">
+                      <FaStethoscope />
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
+
         </div>
       </div>
-    </div>
-
-
-  </div>
-</div>
-
 
       <Stack
         direction="row"
@@ -205,7 +220,6 @@ export default function Consultation() {
             </Box>
           ) : (
             <Table stickyHeader size="small">
-              {/* purple header, same as Today's Appointments */}
               <TableHead className="prim-bg">
                 <TableRow>
                   <TableCell>Patient</TableCell>
